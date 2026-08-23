@@ -46,30 +46,9 @@
 <main id="main">
 
   <section class="hero" id="top">
-    <div class="hero-circuit" aria-hidden="true">
-      <svg viewBox="0 0 1200 500" preserveAspectRatio="none">
-        <g class="circuit-lines">
-          <path d="M0 420 H180 V360 H320 V420 H500" />
-          <path d="M120 500 V440 H260 V480" />
-          <path d="M700 500 V430 H880 V470 H1050 V420 H1200" />
-          <path d="M900 500 V450 H960 V500" />
-          <path d="M0 500 V470 H80 V500" />
-        </g>
-        <g class="circuit-dots">
-          <circle cx="180" cy="360" r="4"/>
-          <circle cx="320" cy="420" r="4"/>
-          <circle cx="500" cy="420" r="4"/>
-          <circle cx="260" cy="440" r="4"/>
-          <circle cx="880" cy="430" r="4"/>
-          <circle cx="1050" cy="470" r="4"/>
-          <circle cx="960" cy="450" r="4"/>
-        </g>
-      </svg>
-    </div>
-
     <div class="container hero-inner">
-      <p class="eyebrow">PC-Service &middot; Reparatur &middot; IT-Hilfe &middot; Schwerte</p>
-      <h1>Ihr IT-Service in&nbsp;Schwerte</h1>
+      <p class="badge-pill"><span class="badge-dot" aria-hidden="true"></span>IT-Service in Schwerte</p>
+      <h1>Ihr IT-Service in&nbsp;<span class="accent-text">Schwerte</span></h1>
       <p class="hero-lede">
         Egal ob langsamer Rechner, Virenbefall, Hardware-Defekt oder ein komplett neuer PC nach Ihren Wünschen –
         ich helfe Ihnen schnell, zuverlässig und zu fairen Preisen.
@@ -79,10 +58,29 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.9c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" fill="currentColor"/></svg>
           01623 755592
         </a>
-        <a class="btn btn-ghost btn-lg" href="#kontakt">Nachricht senden</a>
+        <a class="btn btn-outline btn-lg" href="#kontakt">Nachricht senden</a>
       </div>
-      <p class="hero-note">Schwerte und Umgebung &middot; Antwort meist am selben Tag</p>
     </div>
+
+    <div class="hero-spotlight" aria-hidden="true">
+      <div class="spotlight-cone"></div>
+      <svg class="spotlight-icon" viewBox="0 0 48 48" fill="none">
+        <rect x="12" y="10" width="16" height="28" rx="2" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="17" cy="16" r="1.2" fill="currentColor"/>
+        <circle cx="22" cy="16" r="1.2" fill="currentColor"/>
+        <path d="M28 20 H34 M34 20 V14 M34 20 V26 M34 14 H40 M34 26 H38" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <circle cx="40" cy="14" r="1" fill="currentColor"/>
+        <circle cx="38" cy="26" r="1" fill="currentColor"/>
+      </svg>
+      <div class="spotlight-floor"></div>
+    </div>
+
+    <ul class="trust-strip container" role="list">
+      <li><strong>Kleinunternehmer,</strong> persönlich vor Ort</li>
+      <li><strong>Schwerte</strong> &amp; Umgebung</li>
+      <li>Antwort <strong>meist am selben Tag</strong></li>
+      <li>Feste, <strong>faire Preise</strong></li>
+    </ul>
   </section>
 
   <section class="section" id="leistungen">
