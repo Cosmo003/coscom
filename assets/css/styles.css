@@ -141,6 +141,54 @@ textarea:focus-visible {
   left: 0;
 }
 
+/* ===== Motion ===== */
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.badge-pill,
+.hero h1,
+.hero-lede,
+.hero-ctas,
+.hero-spotlight {
+  animation: heroRise 700ms cubic-bezier(0.16, 0.8, 0.24, 1) both;
+}
+.badge-pill { animation-delay: 0ms; }
+.hero h1 { animation-delay: 90ms; }
+.hero-lede { animation-delay: 180ms; }
+.hero-ctas { animation-delay: 270ms; }
+.hero-spotlight { animation-delay: 360ms; }
+
+@keyframes softPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.3); }
+}
+.badge-dot { animation: softPulse 2.6s ease-in-out infinite; }
+
+@keyframes iconFloat {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -7px); }
+}
+.spotlight-icon { animation: iconFloat 5s ease-in-out infinite; }
+
+@keyframes floorBreathe {
+  0%, 100% { opacity: 0.9; transform: translateX(-50%) scaleX(1); }
+  50% { opacity: 0.6; transform: translateX(-50%) scaleX(0.88); }
+}
+.spotlight-floor { animation: floorBreathe 5s ease-in-out infinite; }
+
+.spotlight-parallax { transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* Scroll-reveal: classes are added by JS only, so content stays fully visible
+   with no JS at all. A timeout fallback in main.js guarantees nothing can be
+   left permanently hidden even if the observer never fires for an element. */
+.pre-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 500ms cubic-bezier(0.2, 0.7, 0.3, 1), transform 500ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.pre-reveal.revealed { opacity: 1; transform: translateY(0); }
+
 /* ===== Buttons ===== */
 .btn {
   display: inline-flex;
@@ -159,13 +207,23 @@ textarea:focus-visible {
 }
 .btn svg { width: 18px; height: 18px; }
 .btn-primary { background: var(--color-accent); color: #05161d; }
-.btn-primary:hover { background: var(--color-accent-dark); }
+.btn-primary:hover { background: var(--color-accent-dark); box-shadow: 0 10px 24px rgba(69, 184, 232, 0.28); }
 .btn-ghost { background: transparent; color: var(--color-fg); border-color: var(--color-card-border); }
 .btn-ghost:hover { border-color: var(--color-accent); color: var(--color-accent); }
 .btn-lg { min-height: 52px; padding: 0 var(--space-8); font-size: 1rem; }
 .btn-sm { min-height: 38px; padding: 0 var(--space-4); font-size: 0.85rem; }
 .btn-block { width: 100%; }
-.btn:active { transform: translateY(1px); }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+@keyframes ringWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-14deg); }
+  40% { transform: rotate(11deg); }
+  60% { transform: rotate(-7deg); }
+  80% { transform: rotate(4deg); }
+}
+.btn-primary:hover svg { animation: ringWiggle 500ms ease-in-out; transform-origin: 50% 50%; }
 
 /* ===== Header ===== */
 .site-header {
@@ -198,13 +256,29 @@ textarea:focus-visible {
   gap: var(--space-8);
 }
 .main-nav a {
+  position: relative;
   color: var(--color-fg-muted);
   font-weight: 500;
   font-size: 0.95rem;
   padding: var(--space-2) 0;
   transition: color var(--transition);
 }
-.main-nav a:hover { color: var(--color-accent); }
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
+}
+.main-nav a:hover,
+.main-nav a:focus-visible { color: var(--color-accent); }
+.main-nav a:hover::after,
+.main-nav a:focus-visible::after { transform: scaleX(1); }
 
 .header-actions { display: flex; align-items: center; gap: var(--space-3); }
 
@@ -528,7 +602,11 @@ textarea:focus-visible {
     border-bottom: 1px solid var(--color-card-border);
     padding: var(--space-4) var(--space-6) var(--space-6);
     gap: var(--space-4);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 220ms ease, transform 220ms ease;
   }
+  .main-nav.is-open.is-visible { opacity: 1; transform: translateY(0); }
 
   .kontakt-grid { grid-template-columns: 1fr; gap: var(--space-12); }
   .grid-3 { grid-template-columns: 1fr; }
