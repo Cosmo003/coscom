@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wartungs-Tracker – Hyundai Tucson</title>
+<meta name="description" content="Wartungs-Tracker für den Hyundai Tucson: Motoröl, Reifen, Bremsen &amp; mehr im Blick – mit 3D-Fahrzeugansicht.">
+<meta name="theme-color" content="#060708">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-row">
+    <a class="back-link" href="../index.html">&larr; CosCom</a>
+    <div class="app-title">
+      <span class="app-title-kicker">Wartungs-Tracker</span>
+      <h1 id="vehicle-name">Hyundai Tucson <span class="muted">(2007)</span></h1>
+    </div>
+    <button class="icon-btn" id="settings-btn" aria-label="Fahrzeug-Einstellungen" title="Fahrzeug-Einstellungen">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19.5a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87A1.7 1.7 0 0 0 2.9 12.4H2.8a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06A2 2 0 1 1 6.88 2.5l.06.06a1.7 1.7 0 0 0 1.87.34H8.9A1.7 1.7 0 0 0 10.5 1.7V1.6a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.6 1.6 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09c.24.7.86 1.2 1.6 1.2h.1a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.06Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero-3d">
+    <div class="hero-3d-inner">
+      <div class="car3d-wrap">
+        <div id="car3d" aria-label="3D-Ansicht des Fahrzeugs (ziehen zum Drehen)"></div>
+        <p class="car3d-hint">Zum Drehen ziehen &middot; Scrollen zum Zoomen</p>
+      </div>
+
+      <div class="vehicle-panel">
+        <div class="field-group">
+          <label for="km-input">Aktueller Kilometerstand</label>
+          <div class="km-input-row">
+            <input id="km-input" type="number" min="0" step="100" inputmode="numeric" placeholder="z. B. 187500">
+            <span class="unit">km</span>
+          </div>
+        </div>
+
+        <div class="stat-row" id="summary-stats">
+          <div class="stat">
+            <span class="stat-value stat-danger" id="stat-overdue">0</span>
+            <span class="stat-label">Fällig</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value stat-warn" id="stat-soon">0</span>
+            <span class="stat-label">Bald fällig</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value stat-good" id="stat-ok">0</span>
+            <span class="stat-label">In Ordnung</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">Schnell hinzufügen</p>
+        <h2>Typische Wartungspunkte</h2>
+      </div>
+      <button class="btn btn-outline" id="add-custom-btn">+ Eigener Eintrag</button>
+    </div>
+    <div class="chip-row" id="quick-add-chips"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">Übersicht</p>
+        <h2>Meine Wartungspunkte</h2>
+      </div>
+    </div>
+
+    <div id="empty-state" class="empty-state" hidden>
+      <p>Noch keine Wartungspunkte eingetragen.</p>
+      <p class="muted">Tippe oben auf einen Vorschlag oder erstelle einen eigenen Eintrag, um loszulegen.</p>
+    </div>
+
+    <div class="cards-grid" id="cards-grid"></div>
+  </section>
+
+</main>
+
+<dialog id="item-dialog">
+  <form method="dialog" class="item-form" id="item-form">
+    <h3 id="item-dialog-title">Wartungspunkt</h3>
+
+    <div class="field">
+      <label for="f-name">Bezeichnung</label>
+      <input id="f-name" name="name" type="text" required placeholder="z. B. Motoröl &amp; Filter">
+    </div>
+
+    <div class="field-pair">
+      <div class="field">
+        <label for="f-last-km">Zuletzt gemacht bei (km)</label>
+        <input id="f-last-km" name="lastKm" type="number" min="0" step="100" placeholder="km">
+      </div>
+      <div class="field">
+        <label for="f-last-date">Zuletzt gemacht am</label>
+        <input id="f-last-date" name="lastDate" type="date">
+      </div>
+    </div>
+
+    <div class="field-pair">
+      <div class="field">
+        <label for="f-interval-km">Intervall (km)</label>
+        <input id="f-interval-km" name="intervalKm" type="number" min="0" step="500" placeholder="z. B. 15000">
+      </div>
+      <div class="field">
+        <label for="f-interval-months">Intervall (Monate)</label>
+        <input id="f-interval-months" name="intervalMonths" type="number" min="0" step="1" placeholder="z. B. 12">
+      </div>
+    </div>
+    <p class="field-hint">Mindestens eines der beiden Intervalle angeben. Sind beide gesetzt, zählt was zuerst eintritt.</p>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-ghost" id="delete-item-btn" hidden>Löschen</button>
+      <div class="dialog-actions-right">
+        <button type="button" class="btn btn-ghost" id="cancel-item-btn">Abbrechen</button>
+        <button type="submit" class="btn btn-primary" id="save-item-btn">Speichern</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="settings-dialog">
+  <form method="dialog" class="item-form" id="settings-form">
+    <h3>Fahrzeug-Einstellungen</h3>
+    <div class="field">
+      <label for="s-name">Fahrzeugname</label>
+      <input id="s-name" name="vehicleName" type="text" required>
+    </div>
+    <div class="field">
+      <label for="s-annual-km">Jahresfahrleistung (ca.)</label>
+      <div class="km-input-row">
+        <input id="s-annual-km" name="annualKm" type="number" min="0" step="500">
+        <span class="unit">km/Jahr</span>
+      </div>
+      <p class="field-hint">Wird genutzt, um Zeit- in Kilometerangaben umzurechnen.</p>
+    </div>
+    <div class="dialog-actions">
+      <div class="dialog-actions-right">
+        <button type="button" class="btn btn-ghost" id="cancel-settings-btn">Abbrechen</button>
+        <button type="submit" class="btn btn-primary">Speichern</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<footer class="app-footer">
+  <p>Alle Daten werden nur lokal in diesem Browser gespeichert.</p>
+</footer>
+
+<script type="module" src="js/car3d.js"></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
