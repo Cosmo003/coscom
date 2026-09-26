@@ -1,0 +1,800 @@
+<title>Date-Radar Schwerte</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#F5F0F1; --surface:#FFFFFF; --paper:#FFFBF8; --ink:#1E2230; --muted:#6B6470;
+  --line:#E3D8DB; --accent:#C23B58; --accent-soft:#F7DDE3; --accent-ink:#FFFFFF;
+  --moss:#2E6A58; --moss-soft:#DCEDE6; --sun:#C98A1E; --ring:#D9CBD0;
+  --shadow:0 1px 2px rgba(30,34,48,.06),0 6px 18px rgba(30,34,48,.06);
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#15131A; --surface:#201D26; --paper:#27232E; --ink:#F2ECEE; --muted:#A99FA9;
+    --line:#39333F; --accent:#EF6F8A; --accent-soft:#3E2230; --accent-ink:#1A0E12;
+    --moss:#72C2A7; --moss-soft:#1E3530; --sun:#EDBB5F; --ring:#3F3846;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#15131A; --surface:#201D26; --paper:#27232E; --ink:#F2ECEE; --muted:#A99FA9;
+  --line:#39333F; --accent:#EF6F8A; --accent-soft:#3E2230; --accent-ink:#1A0E12;
+  --moss:#72C2A7; --moss-soft:#1E3530; --sun:#EDBB5F; --ring:#3F3846;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Header */
+.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+.brand h1{font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:-.02em}
+.brand h1 span{color:var(--accent)}
+.brand p{margin:4px 0 0;color:var(--muted)}
+.me{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.me .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.me .seg button{border:0;background:none;padding:5px 12px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13px}
+.me .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* Tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;margin-block:18px 20px;padding-block:8px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{border:0;background:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--muted);white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tabs .count{font-family:var(--mono);font-size:11px;background:var(--accent-soft);color:var(--accent);padding:1px 6px;border-radius:6px;margin-left:4px}
+
+/* Generator layout */
+.gen{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+@media (max-width:760px){.gen{grid-template-columns:1fr}}
+.radar-box{display:grid;gap:10px;justify-items:center}
+.radar{width:100%;max-width:260px;aspect-ratio:1;cursor:pointer;touch-action:manipulation}
+.radar text{font-family:var(--mono);font-size:8px;fill:var(--muted)}
+.radar .home{fill:var(--accent)}
+.radar-cap{font-size:13px;color:var(--muted);text-align:center}
+.radar-cap b{color:var(--ink);font-family:var(--mono)}
+
+.filters{display:grid;gap:16px}
+.fgroup{display:grid;gap:6px}
+.flabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip.dist[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.input,select.input,textarea.input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+textarea.input{min-height:70px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:none}
+.btn.small{padding:6px 10px;font-size:13px;border-radius:9px}
+.btn:disabled{opacity:.5;cursor:default}
+.note{font-size:13px;color:var(--muted)}
+.status{font-size:14px;color:var(--muted);min-height:1.5em}
+
+/* Results */
+.results{margin-top:28px;display:grid;gap:14px}
+.res-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.res-head h2{font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+
+/* Ticket card */
+.ticket{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-rows:auto 1fr auto}
+.t-body::before,.t-body::after{content:"";position:absolute;top:-10px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.t-body::before{left:-10px;clip-path:inset(0 0 0 50%)}
+.t-body::after{right:-10px;clip-path:inset(0 50% 0 0)}
+.t-head{padding:14px 16px 12px;border-bottom:1.5px dashed var(--line);min-height:74px;display:grid;gap:3px;align-content:start}
+.t-head h3{font-size:18px;font-weight:700}
+.t-where{font-size:13px;color:var(--muted)}
+.t-body{position:relative;padding:12px 16px;display:grid;gap:8px;align-content:start}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.m{font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:6px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
+.m.km{color:var(--accent);border-color:var(--accent-soft);background:var(--accent-soft)}
+.m.check{color:var(--sun);border-color:var(--sun);background:none}
+.m.done{color:var(--moss);background:var(--moss-soft);border-color:var(--moss-soft)}
+.t-desc{margin:0}
+.t-tip{margin:0;font-size:13.5px;color:var(--muted)}
+.t-tip b{color:var(--ink);font-weight:600}
+.t-foot{padding:10px 12px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.t-foot .spacer{flex:1}
+.by{font-size:12px;color:var(--muted)}
+.stars{display:inline-flex;gap:2px}
+.stars button{border:0;background:none;cursor:pointer;font-size:18px;line-height:1;padding:2px;color:var(--ring)}
+.stars button.on{color:var(--sun)}
+.fav[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.picked{outline:3px solid var(--accent);outline-offset:3px}
+
+/* Collection */
+.coll-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+details.add{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:18px}
+details.add summary{cursor:pointer;font-weight:700}
+.form{display:grid;gap:12px;margin-top:12px}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.form .two{grid-template-columns:1fr}}
+label.f{display:grid;gap:5px;font-size:13px;font-weight:600}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:14px}
+
+/* Events */
+.ev-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px}
+.panel h2{font-size:20px}
+
+/* Profile */
+.people{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.people{grid-template-columns:1fr}}
+.person{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px}
+.person h3{font-size:17px}
+.banner{padding:10px 14px;border-radius:12px;background:var(--moss-soft);color:var(--moss);font-size:14px;margin-bottom:16px}
+.banner.warn{background:var(--accent-soft);color:var(--accent)}
+
+@media (prefers-reduced-motion:no-preference){
+  .ticket{animation:pop .28s ease both}
+  @keyframes pop{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Date<span>·</span>Radar</h1>
+      <p id="today">Ab Schwerte, für euch zwei.</p>
+    </div>
+    <div class="me" id="meBox">
+      <span>Ich bin</span>
+      <div class="seg" id="meSeg"></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Bereiche">
+    <button role="tab" id="tab-gen" aria-selected="true" data-tab="gen">Ideen finden</button>
+    <button role="tab" id="tab-coll" aria-selected="false" data-tab="coll">Unsere Sammlung <span class="count" id="collCount">0</span></button>
+    <button role="tab" id="tab-ev" aria-selected="false" data-tab="ev">Veranstaltungen</button>
+    <button role="tab" id="tab-prof" aria-selected="false" data-tab="prof">Über uns</button>
+  </nav>
+
+  <div id="modeBanner" hidden></div>
+
+  <!-- ============ GENERATOR ============ -->
+  <section id="view-gen" role="tabpanel" aria-labelledby="tab-gen">
+    <div class="gen">
+      <div class="radar-box">
+        <svg class="radar" id="radar" viewBox="-130 -130 260 260" role="img" aria-label="Entfernung ab Schwerte wählen"></svg>
+        <div class="radar-cap">Radius ab Schwerte: <b id="radarCap">bis 25 km</b><br>Tippe auf einen Ring.</div>
+      </div>
+
+      <div class="filters">
+        <div class="fgroup">
+          <span class="flabel">Wie weit?</span>
+          <div class="chips" id="f-dist"></div>
+        </div>
+        <div class="fgroup">
+          <span class="flabel">Budget für euch beide</span>
+          <div class="chips" id="f-budget"></div>
+        </div>
+        <div class="fgroup">
+          <span class="flabel">Wie viel Zeit?</span>
+          <div class="chips" id="f-dur"></div>
+        </div>
+        <div class="fgroup">
+          <span class="flabel">Worauf habt ihr Lust? (mehrere möglich)</span>
+          <div class="chips" id="f-mood"></div>
+        </div>
+        <div class="fgroup">
+          <span class="flabel">Drinnen oder draußen?</span>
+          <div class="chips" id="f-io"></div>
+        </div>
+        <div class="row">
+          <label class="f" style="flex:1;min-width:150px">Wann?
+            <select class="input" id="f-when">
+              <option>Heute</option><option>Morgen</option><option selected>Dieses Wochenende</option><option>Nächste Woche</option><option>Irgendwann</option>
+            </select>
+          </label>
+          <label class="f" style="flex:2;min-width:200px">Sonst noch was?
+            <input class="input" id="f-extra" placeholder="z. B. es soll regnen, wir haben Hunger, was Neues">
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btnAi">✦ Ideen generieren</button>
+          <button class="btn" id="btnPool">Aus dem Pool würfeln</button>
+          <button class="btn ghost" id="btnStop" hidden>Stopp</button>
+        </div>
+        <div class="status" id="genStatus" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="results" id="genResults"></div>
+  </section>
+
+  <!-- ============ SAMMLUNG ============ -->
+  <section id="view-coll" role="tabpanel" aria-labelledby="tab-coll" hidden>
+    <div class="coll-top">
+      <div class="chips" id="collFilter"></div>
+      <button class="btn primary" id="btnSurprise">Überrasch uns</button>
+    </div>
+    <details class="add" id="addBox">
+      <summary>+ Eigene Idee eintragen</summary>
+      <form class="form" id="addForm">
+        <label class="f">Was?<input class="input" id="a-title" required placeholder="z. B. Sonnenuntergang an der Hohensyburg"></label>
+        <div class="two">
+          <label class="f">Ort / Location<input class="input" id="a-place" placeholder="z. B. Kaiser-Wilhelm-Denkmal"></label>
+          <label class="f">Stadt<input class="input" id="a-city" placeholder="Dortmund"></label>
+        </div>
+        <div class="two">
+          <label class="f">Budget
+            <select class="input" id="a-budget"><option value="0">Gratis</option><option value="1" selected>bis 20 €</option><option value="2">bis 50 €</option><option value="3">mehr als 50 €</option></select>
+          </label>
+          <label class="f">Entfernung ab Schwerte (km)<input class="input" id="a-km" type="number" min="0" max="999" inputmode="numeric" placeholder="10"></label>
+        </div>
+        <label class="f">Notiz<textarea class="input" id="a-desc" placeholder="Warum wir das machen wollen, Link, Öffnungszeiten…"></textarea></label>
+        <div><button class="btn primary" type="submit">Zur Sammlung</button></div>
+      </form>
+    </details>
+    <div class="grid" id="collList"></div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section id="view-ev" role="tabpanel" aria-labelledby="tab-ev" hidden>
+    <div class="panel">
+      <h2>Was läuft gerade?</h2>
+      <div class="row">
+        <label class="f" style="flex:1;min-width:160px">Stadt / Region
+          <select class="input" id="ev-city"></select>
+        </label>
+        <label class="f" style="flex:1;min-width:160px">Zeitraum
+          <select class="input" id="ev-when">
+            <option>heute</option><option selected>dieses Wochenende</option><option>nächste Woche</option><option>diesen Monat</option>
+          </select>
+        </label>
+      </div>
+      <p class="note" style="margin:0">Aktuelle Termine kommen direkt aus der Suche. Die Links öffnen in einem neuen Tab.</p>
+      <div class="ev-links" id="evLinks"></div>
+    </div>
+    <div class="results">
+      <div class="res-head">
+        <h2>Wiederkehrende Highlights</h2>
+        <button class="btn" id="btnEvAi">✦ Was ist um diese Jahreszeit los?</button>
+      </div>
+      <p class="note" style="margin:0">Claude kennt feste Formate wie Kirmes, Märkte oder Festivals, aber keine tagesaktuellen Termine. Deshalb steht bei solchen Ideen „Termin prüfen“.</p>
+      <div class="status" id="evStatus" aria-live="polite"></div>
+      <div class="grid" id="evResults"></div>
+    </div>
+  </section>
+
+  <!-- ============ PROFIL ============ -->
+  <section id="view-prof" role="tabpanel" aria-labelledby="tab-prof" hidden>
+    <p class="note" style="margin-top:0">Alles hier fließt in die Ideen ein. Je genauer, desto besser passen die Vorschläge.</p>
+    <form id="profForm" class="form">
+      <div class="people">
+        <div class="person">
+          <h3>Person 1</h3>
+          <label class="f">Name<input class="input" id="p-n1"></label>
+          <label class="f">Mag / Interessen<textarea class="input" id="p-i1" placeholder="z. B. Technik, gutes Essen, Autos, Fußball"></textarea></label>
+        </div>
+        <div class="person">
+          <h3>Person 2</h3>
+          <label class="f">Name<input class="input" id="p-n2"></label>
+          <label class="f">Mag / Interessen<textarea class="input" id="p-i2" placeholder="z. B. Natur, Fotos, Tiere, Shopping"></textarea></label>
+        </div>
+      </div>
+      <label class="f">Was wir zusammen lieben<textarea class="input" id="p-both" placeholder="z. B. Sonnenuntergänge, Sushi, Serienabende"></textarea></label>
+      <label class="f">No-Gos<textarea class="input" id="p-no" placeholder="z. B. Höhenangst, keine Menschenmassen, kein Fisch"></textarea></label>
+      <div class="two">
+        <label class="f">Essen<input class="input" id="p-food" placeholder="z. B. eine(r) vegetarisch"></label>
+        <label class="f">Unterwegs mit
+          <select class="input" id="p-mob"><option>Auto</option><option>Bahn (Deutschlandticket)</option><option selected>Auto oder Bahn</option></select>
+        </label>
+      </div>
+      <div class="row"><button class="btn primary" type="submit">Speichern</button><span class="status" id="profStatus" aria-live="polite"></span></div>
+    </form>
+  </section>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- Kuratierter Ideen-Pool rund um Schwerte (km ≈ Luftlinie/Fahrweg ab Schwerte) ---------- */
+// b: 0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr; d: h (paar Std.), abend, tag; io: drinnen/draußen/beides; mo: Monate (1-12), leer = ganzjährig
+const POOL = [
+  {t:"Picknick an den Ruhrwiesen",p:"Ruhrwiesen / Ruhrtalradweg",c:"Schwerte",km:1,b:0,d:"h",io:"draußen",m:["entspannt","romantisch"],mo:[4,5,6,7,8,9],desc:"Decke, Snacks vom Markt, Blick auf die Ruhr. Klingt simpel, wirkt immer.",tip:"Beim Wochenmarkt in der Altstadt vorher einkaufen."},
+  {t:"Radtour Schwerte → Hengsteysee",p:"Ruhrtalradweg",c:"Schwerte / Hagen",km:7,b:0,d:"h",io:"draußen",m:["aktiv","entspannt"],mo:[4,5,6,7,8,9,10],desc:"Flach an der Ruhr entlang bis zum See, dort Pause mit Seeblick.",tip:"Rund 20 km hin und zurück. Am Seeufer gibt es Kioske."},
+  {t:"Sonnenuntergang an der Hohensyburg",p:"Kaiser-Wilhelm-Denkmal / Ruine Syburg",c:"Dortmund",km:8,b:0,d:"abend",io:"draußen",m:["romantisch","entspannt"],mo:[],desc:"Blick über Hengsteysee und Ruhrtal, oben an der Burgruine wird es ruhig.",tip:"Eine halbe Stunde vor Sonnenuntergang da sein, Jacke mitnehmen."},
+  {t:"Abend in der Spielbank Hohensyburg",p:"Spielbank Hohensyburg",c:"Dortmund",km:8,b:2,d:"abend",io:"drinnen",m:["abenteuer","romantisch"],mo:[],desc:"Schick machen, ein festes Budget für Chips, danach Aussicht an der Burg.",tip:"Ausweis mitnehmen, Dresscode vorher checken."},
+  {t:"Tretboot auf dem Hengsteysee",p:"Hengsteysee",c:"Hagen / Dortmund",km:7,b:1,d:"h",io:"draußen",m:["aktiv","entspannt"],mo:[5,6,7,8,9],desc:"Eine Stunde auf dem Wasser, danach Eis am Ufer.",tip:"Bei schönem Wetter am Wochenende lieber früh kommen."},
+  {t:"Essen in der Rohrmeisterei",p:"Rohrmeisterei",c:"Schwerte",km:1,b:2,d:"abend",io:"drinnen",m:["kulinarisch","romantisch"],mo:[],desc:"Industriehalle direkt in Schwerte, gutes Essen und oft Kultur im Haus.",tip:"Am Wochenende reservieren und ins Veranstaltungsprogramm schauen."},
+  {t:"Spaziergang am Phoenix-See",p:"Phoenix-See",c:"Dortmund-Hörde",km:12,b:1,d:"h",io:"draußen",m:["entspannt","romantisch","kulinarisch"],mo:[],desc:"Runde um den See (gut 3 km), danach Café oder Abendessen am Hafen.",tip:"Abends mit Lichtern auf dem Wasser am schönsten."},
+  {t:"Westfalenpark und Florianturm",p:"Westfalenpark",c:"Dortmund",km:15,b:1,d:"h",io:"draußen",m:["entspannt","romantisch"],mo:[4,5,6,7,8,9,10],desc:"Rosarium, Wiesen und oben vom Florianturm über ganz Dortmund schauen.",tip:"Eintritt für den Park, Turm extra."},
+  {t:"Programmkino in der Schauburg",p:"Schauburg",c:"Dortmund",km:15,b:1,d:"abend",io:"drinnen",m:["entspannt","kultur","romantisch"],mo:[],desc:"Altes Kino mit Charme statt Multiplex. Danach noch was trinken in der City.",tip:"Programm online ansehen und Tickets vorab sichern."},
+  {t:"Dortmunder U: Kunst und Aussicht",p:"Dortmunder U",c:"Dortmund",km:16,b:1,d:"h",io:"drinnen",m:["kultur"],mo:[],desc:"Museum Ostwall, wechselnde Ausstellungen und die Dachterrasse mit Stadtblick.",tip:"Gut für Regentage, liegt direkt am Hauptbahnhof."},
+  {t:"Deutsches Fußballmuseum",p:"Deutsches Fußballmuseum",c:"Dortmund",km:16,b:2,d:"h",io:"drinnen",m:["kultur","aktiv"],mo:[],desc:"Interaktiv, mit Torwand und Geschichte. Macht auch Nicht-Fans Spaß.",tip:"Gegenüber vom Hauptbahnhof, gut mit der Bahn."},
+  {t:"Dechenhöhle entdecken",p:"Dechenhöhle",c:"Iserlohn",km:15,b:1,d:"h",io:"drinnen",m:["abenteuer","kultur"],mo:[],desc:"Tropfsteinhöhle mit Führung. Drinnen immer gleich kühl, egal welches Wetter.",tip:"Führungen laufen zu festen Zeiten, vorher nachsehen."},
+  {t:"LWL-Freilichtmuseum Hagen",p:"LWL-Freilichtmuseum",c:"Hagen",km:16,b:1,d:"tag",io:"draußen",m:["kultur","kulinarisch"],mo:[4,5,6,7,8,9,10],desc:"Alte Werkstätten im Tal: Schmiede, Brauerei, Bäckerei. Mit frischem Brot zum Mitnehmen.",tip:"Saison etwa April bis Oktober."},
+  {t:"Solebad im Revierpark Wischlingen",p:"Revierpark Wischlingen",c:"Dortmund",km:22,b:2,d:"h",io:"drinnen",m:["entspannt","romantisch"],mo:[],desc:"Warmes Solewasser und Sauna. Perfekt für graue Tage.",tip:"Unter der Woche ist es ruhiger."},
+  {t:"Burg Altena mit Erlebnisaufzug",p:"Burg Altena",c:"Altena",km:25,b:1,d:"h",io:"beides",m:["kultur","abenteuer"],mo:[],desc:"Mit dem Aufzug durch den Berg nach oben in eine echte Ritterburg.",tip:"Danach durch die Altstadt an der Lenne."},
+  {t:"Tretboot oder SUP am Kemnader See",p:"Kemnader See",c:"Bochum / Witten",km:22,b:1,d:"h",io:"draußen",m:["aktiv","entspannt"],mo:[5,6,7,8,9],desc:"Wasser, Wiese, Radweg. Danach Biergarten am Ufer.",tip:"SUP-Verleih vorher reservieren."},
+  {t:"Sterne im Planetarium Bochum",p:"Zeiss Planetarium",c:"Bochum",km:28,b:1,d:"abend",io:"drinnen",m:["romantisch","kultur"],mo:[],desc:"Zurücklehnen unter der Kuppel, dazu eine Show oder ein Musikprogramm.",tip:"Shows sind oft ausverkauft, früh buchen."},
+  {t:"Halde Hoheward bei Nacht",p:"Horizontobservatorium Halde Hoheward",c:"Herten",km:40,b:0,d:"abend",io:"draußen",m:["romantisch","abenteuer"],mo:[],desc:"Auf die Halde steigen, oben die großen Bögen und Weitblick übers Revier.",tip:"Stirnlampe mitnehmen, der Aufstieg dauert etwa 30 Minuten."},
+  {t:"Möhnesee: Runde und Fischbrötchen",p:"Möhnesee / Staumauer",c:"Möhnesee",km:40,b:1,d:"tag",io:"draußen",m:["entspannt","aktiv"],mo:[4,5,6,7,8,9,10],desc:"Über die Staumauer laufen, Boot fahren oder einfach am Ufer sitzen.",tip:"Am Wochenende früh fahren, Parkplätze werden knapp."},
+  {t:"Zeche Zollverein",p:"UNESCO-Welterbe Zollverein",c:"Essen",km:45,b:0,d:"tag",io:"beides",m:["kultur"],mo:[],desc:"Industriekulisse zum Staunen, Ruhr Museum und im Winter die Eisbahn.",tip:"Das Gelände ist gratis, das Ruhr Museum kostet Eintritt."},
+  {t:"Attahöhle Attendorn",p:"Atta-Höhle",c:"Attendorn",km:55,b:1,d:"tag",io:"drinnen",m:["abenteuer"],mo:[],desc:"Eine der schönsten Tropfsteinhöhlen Deutschlands, danach Biggesee.",tip:"Führungen im Takt, kombinierbar mit Schifffahrt auf dem Biggesee."},
+  {t:"Gasometer Oberhausen",p:"Gasometer",c:"Oberhausen",km:62,b:1,d:"h",io:"drinnen",m:["kultur","romantisch"],mo:[],desc:"Riesige Ausstellung im alten Gasspeicher, oben auf dem Dach Rundumblick.",tip:"Welche Ausstellung gerade läuft, steht auf der Website."},
+  {t:"Landschaftspark Duisburg-Nord bei Nacht",p:"Landschaftspark Duisburg-Nord",c:"Duisburg",km:70,b:0,d:"abend",io:"draußen",m:["romantisch","abenteuer"],mo:[],desc:"Das alte Hüttenwerk leuchtet nachts in bunten Farben. Gratis und ziemlich beeindruckend.",tip:"Lichtinstallation meist Fr bis So nach Einbruch der Dunkelheit."},
+  {t:"Tiger & Turtle",p:"Tiger & Turtle – Magic Mountain",c:"Duisburg",km:72,b:0,d:"h",io:"draußen",m:["abenteuer","aktiv"],mo:[],desc:"Begehbare Achterbahn-Skulptur auf der Halde. Gute Fotos garantiert.",tip:"Mit Landschaftspark Nord zu einem Tag kombinieren."},
+  {t:"Tagesausflug Münster",p:"Altstadt, Prinzipalmarkt und Aasee",c:"Münster",km:70,b:2,d:"tag",io:"beides",m:["kultur","kulinarisch","entspannt"],mo:[],desc:"Durch die Altstadt bummeln, Kaffee am Prinzipalmarkt, abends am Aasee.",tip:"Mit dem Rad durch die Stadt, Leihräder gibt es am Bahnhof."},
+  {t:"Kahler Asten und Winterberg",p:"Kahler Asten",c:"Winterberg",km:110,b:2,d:"tag",io:"draußen",m:["aktiv","abenteuer"],mo:[],desc:"Wandern im Sommer, Rodeln oder Schnee im Winter, oben Hütte mit Aussicht.",tip:"Im Winter vorher Schneelage prüfen."},
+  {t:"Themen-Kochabend zu Hause",p:"Eure Küche",c:"Schwerte",km:0,b:1,d:"abend",io:"drinnen",m:["kulinarisch","romantisch","entspannt"],mo:[],desc:"Ein Land auslosen, zusammen einkaufen und kochen, passende Musik dazu.",tip:"Jede Person sucht einen Gang aus und verrät nichts vorher."},
+  {t:"Spieleabend mit Einsatz",p:"Zu Hause",c:"Schwerte",km:0,b:0,d:"abend",io:"drinnen",m:["entspannt"],mo:[],desc:"Brett- oder Kartenspiel, wer verliert, erfüllt einen kleinen Wunsch.",tip:"Snacks vorher gemeinsam einkaufen."},
+  {t:"Escape Room",p:"Escape Room in Dortmund",c:"Dortmund",km:15,b:2,d:"h",io:"drinnen",m:["abenteuer","aktiv"],mo:[],desc:"60 Minuten Rätseln als Team. Zeigt schnell, wie gut ihr zusammenarbeitet.",tip:"Für zwei Personen einen kleineren Raum wählen."},
+  {t:"Weihnachtsmarkt Dortmund",p:"Weihnachtsmarkt am Hansaplatz",c:"Dortmund",km:15,b:1,d:"abend",io:"draußen",m:["romantisch","kulinarisch"],mo:[11,12],desc:"Der riesige Weihnachtsbaum, Glühwein und gebrannte Mandeln.",tip:"Unter der Woche ist es deutlich entspannter.",check:true},
+  {t:"Cranger Kirmes",p:"Crange",c:"Herne",km:30,b:2,d:"abend",io:"draußen",m:["abenteuer","aktiv"],mo:[8],desc:"Eine der größten Kirmessen Deutschlands: Riesenrad, Achterbahn, Pommes.",tip:"Anfang August. Mit der Bahn anreisen.",check:true},
+  {t:"ExtraSchicht – Nacht der Industriekultur",p:"Spielorte im ganzen Ruhrgebiet",c:"Ruhrgebiet",km:30,b:2,d:"abend",io:"beides",m:["kultur","abenteuer"],mo:[6],desc:"Eine Nacht lang Zechen, Hallen und Halden mit Programm, Shuttlebusse inklusive.",tip:"Findet meist im Juni statt, Ticket gilt für alle Orte.",check:true},
+  {t:"Freibad-Nachmittag im Elsebad",p:"Elsebad",c:"Schwerte",km:1,b:1,d:"h",io:"draußen",m:["entspannt","aktiv"],mo:[6,7,8],desc:"Schwimmen, Pommes, Sonnenliege. Sommer in Schwerte.",tip:"Öffnungszeiten der Saison vorher checken."},
+];
+
+const DIST = [
+  {k:1,label:"Schwerte",max:5,r:30},
+  {k:2,label:"Umgebung",max:25,r:58},
+  {k:3,label:"Ruhrgebiet",max:75,r:90},
+  {k:4,label:"Tagesausflug",max:150,r:122},
+];
+const BUDGET = [{v:0,label:"Gratis"},{v:1,label:"bis 20 €"},{v:2,label:"bis 50 €"},{v:3,label:"Egal"}];
+const BUDGET_TXT = ["gratis","bis 20 €","bis 50 €","mehr als 50 €"];
+const BUDGET_SIGN = ["0 €","€","€€","€€€"];
+const DUR = [{v:"h",label:"Ein paar Stunden"},{v:"abend",label:"Ein Abend"},{v:"tag",label:"Ganzer Tag"},{v:"we",label:"Wochenende mit Übernachtung"}];
+const MOODS = ["romantisch","entspannt","aktiv","kultur","kulinarisch","abenteuer"];
+const IO = [{v:"egal",label:"Egal"},{v:"drinnen",label:"Drinnen"},{v:"draußen",label:"Draußen"}];
+const CITIES = [
+  ["Schwerte","schwerte.de"],["Dortmund","dortmund.de"],["Hagen","hagen.de"],["Unna","unna.de"],
+  ["Iserlohn","iserlohn.de"],["Witten","witten.de"],["Bochum","bochum.de"],["Essen","essen.de"],
+  ["Münster","muenster.de"],["Sauerland","sauerland.com"],
+];
+const DEFAULT_COUPLE = {n1:"Cosmin",i1:"",n2:"Sie",i2:"",both:"",no:"",food:"",mob:"Auto oder Bahn"};
+
+/* ---------- State ---------- */
+const LS = "dateradar:v1:";
+const lsGet = (k, d) => { try { const v = localStorage.getItem(LS + k); return v ? JSON.parse(v) : d; } catch { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(LS + k, JSON.stringify(v)); } catch {} };
+
+const S = {
+  tab: "gen",
+  f: Object.assign({dist:2,budget:2,dur:"abend",moods:[],io:"egal"}, lsGet("filters", {})),
+  ideas: [],
+  couple: {...DEFAULT_COUPLE},
+  me: lsGet("me", 1),
+  collFilter: "offen",
+  results: [], resultsTitle: "", resultsKind: "",
+  evResults: [],
+  pickedId: null,
+  confirmDel: null,
+};
+let db = null, sample = null, mode = "loading";
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+const mapsUrl = i => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([i.place, i.city].filter(Boolean).join(", "));
+const searchUrl = q => "https://www.google.com/search?q=" + encodeURIComponent(q);
+const now = new Date();
+const month = now.getMonth() + 1;
+const todayTxt = now.toLocaleDateString("de-DE", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+const names = () => [S.couple.n1 || "Person 1", S.couple.n2 || "Person 2"];
+const myName = () => names()[S.me === 2 ? 1 : 0];
+const normTitle = t => String(t || "").toLowerCase().replace(/\s+/g, " ").trim();
+const isSaved = t => S.ideas.some(i => normTitle(i.title) === normTitle(t));
+
+function poolToIdea(p) {
+  return {title:p.t, place:p.p, city:p.c, km:p.km, budget:p.b, duration:{h:"2–4 Std.",abend:"ein Abend",tag:"ganzer Tag"}[p.d],
+    moods:p.m, io:p.io, desc:p.desc, tip:p.tip, checkDate:!!p.check, source:"pool"};
+}
+
+/* ---------- Store (db, sonst lokal im Browser) ---------- */
+const store = {
+  async add(idea) {
+    const doc = {...idea, status:"offen", fav:false, rating:0, addedBy:myName(), createdAt:Date.now()};
+    if (db) { await db.collection("ideas").add(doc); return; }
+    S.ideas.push({id:"l" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), ...doc});
+    lsSet("ideas", S.ideas); renderAll();
+  },
+  async update(id, patch) {
+    if (db) { await db.doc("ideas/" + id).update(patch); return; }
+    const i = S.ideas.find(x => x.id === id); if (i) Object.assign(i, patch);
+    lsSet("ideas", S.ideas); renderAll();
+  },
+  async remove(id) {
+    if (db) { await db.doc("ideas/" + id).delete(); return; }
+    S.ideas = S.ideas.filter(x => x.id !== id); lsSet("ideas", S.ideas); renderAll();
+  },
+  async saveCouple(c) {
+    if (db) { await db.doc("settings/couple").set(c); return; }
+    S.couple = c; lsSet("couple", c); renderAll();
+  },
+};
+
+/* ---------- Radar ---------- */
+function kmToR(km) {
+  let prev = {max:0, r:6};
+  for (const d of DIST) { if (km <= d.max) return prev.r + (d.r - prev.r) * ((km - prev.max) / (d.max - prev.max)); prev = d; }
+  return 124;
+}
+function renderRadar() {
+  const sel = DIST.find(d => d.k === S.f.dist);
+  let s = "";
+  for (const d of [...DIST].reverse()) {
+    const on = d.k <= S.f.dist;
+    s += `<circle r="${d.r}" fill="${on ? "var(--accent-soft)" : "none"}" fill-opacity="${on ? (d.k === S.f.dist ? .55 : .35) : 0}" stroke="${d.k === S.f.dist ? "var(--accent)" : "var(--ring)"}" stroke-width="${d.k === S.f.dist ? 1.6 : 1}" stroke-dasharray="${d.k === S.f.dist ? "" : "2 3"}"/>`;
+  }
+  const places = [...POOL.map(p => ({t:p.t, km:p.km})), ...S.ideas.filter(i => typeof i.km === "number").map(i => ({t:i.title, km:i.km, saved:true}))];
+  for (const p of places) {
+    const a = (hash(p.t) % 360) * Math.PI / 180, r = Math.max(8, kmToR(p.km));
+    const inside = p.km <= sel.max;
+    s += `<circle cx="${(Math.cos(a) * r).toFixed(1)}" cy="${(Math.sin(a) * r).toFixed(1)}" r="${p.saved ? 3.2 : 2.3}" fill="${inside ? (p.saved ? "var(--moss)" : "var(--accent)") : "var(--ring)"}"><title>${esc(p.t)} · ≈${p.km} km</title></circle>`;
+  }
+  for (const d of DIST) s += `<text x="4" y="${-d.r + 10}">${d.max} km</text>`;
+  s += `<circle class="home" r="4.5"/><text x="7" y="3" style="fill:var(--ink);font-weight:700">Schwerte</text>`;
+  $("#radar").innerHTML = s;
+  $("#radarCap").textContent = `${sel.label} · bis ${sel.max} km`;
+}
+$("#radar").addEventListener("click", e => {
+  const svg = e.currentTarget, pt = svg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  const dist = Math.hypot(p.x, p.y);
+  const d = DIST.find(x => dist <= x.r + 4) || DIST[DIST.length - 1];
+  setF("dist", d.k);
+});
+
+/* ---------- Filters ---------- */
+function chipRow(el, items, isOn, onClick, cls = "") {
+  el.innerHTML = items.map((it, i) => `<button type="button" class="chip ${cls}" data-i="${i}" aria-pressed="${isOn(it)}">${esc(it.label)}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("button[data-i]"); if (b) onClick(items[+b.dataset.i]); };
+}
+function setF(k, v) { S.f[k] = v; lsSet("filters", S.f); renderFilters(); renderRadar(); }
+function renderFilters() {
+  chipRow($("#f-dist"), DIST.map(d => ({...d, label:`${d.label} (${d.max} km)`})), d => d.k === S.f.dist, d => setF("dist", d.k), "dist");
+  chipRow($("#f-budget"), BUDGET, b => b.v === S.f.budget, b => setF("budget", b.v));
+  chipRow($("#f-dur"), DUR, d => d.v === S.f.dur, d => setF("dur", d.v));
+  chipRow($("#f-mood"), MOODS.map(m => ({v:m, label:m[0].toUpperCase() + m.slice(1)})), m => S.f.moods.includes(m.v),
+    m => setF("moods", S.f.moods.includes(m.v) ? S.f.moods.filter(x => x !== m.v) : [...S.f.moods, m.v]));
+  chipRow($("#f-io"), IO, o => o.v === S.f.io, o => setF("io", o.v));
+}
+
+/* ---------- Pool ---------- */
+function poolMatches(strict) {
+  const maxKm = DIST.find(d => d.k === S.f.dist).max, f = S.f;
+  const durOk = d => f.dur === "h" ? d === "h" || d === "abend" : f.dur === "abend" ? d !== "tag" : true;
+  return POOL.filter(p =>
+    p.km <= maxKm && p.b <= f.budget &&
+    (!p.mo.length || p.mo.includes(month)) &&
+    (f.io === "egal" || p.io === "beides" || p.io === f.io) &&
+    (!strict || durOk(p.d)) &&
+    (!strict || !f.moods.length || p.m.some(m => f.moods.includes(m)))
+  );
+}
+function rollPool() {
+  let list = poolMatches(true), loose = false;
+  if (list.length < 3) { list = poolMatches(false); loose = true; }
+  const picks = list.sort(() => Math.random() - .5).slice(0, 3).map(poolToIdea);
+  S.results = picks; S.resultsKind = "pool";
+  S.resultsTitle = picks.length ? (loose ? "Nichts passt ganz genau. Das kommt am nächsten ran:" : "Aus dem Pool gewürfelt") : "";
+  $("#genStatus").textContent = picks.length ? "" : "Mit diesen Filtern gibt es nichts im Pool. Mehr Radius oder Budget probieren.";
+  renderResults();
+}
+
+/* ---------- Claude ---------- */
+function coupleText() {
+  const c = S.couple, [a, b] = names();
+  return [
+    `${a}: ${c.i1 || "keine Angaben"}`,
+    `${b}: ${c.i2 || "keine Angaben"}`,
+    c.both && `Gemeinsam mögen sie: ${c.both}`,
+    c.no && `No-Gos: ${c.no}`,
+    c.food && `Essen: ${c.food}`,
+    `Unterwegs mit: ${c.mob || "Auto oder Bahn"}`,
+  ].filter(Boolean).join("\n");
+}
+const IDEA_SHAPE = `{"title": "kurzer Titel", "place": "echter Name des Ortes/der Location", "city": "Stadt", "km": ca. Entfernung ab Schwerte als Zahl, "budget": 0|1|2|3 (0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr, für beide zusammen), "cost": "z. B. ca. 30 € zu zweit", "duration": "z. B. 2–3 Std.", "moods": ["romantisch"|"entspannt"|"aktiv"|"kultur"|"kulinarisch"|"abenteuer"], "io": "drinnen"|"draußen"|"beides", "desc": "2 Sätze, warum es zu genau diesem Paar passt", "tip": "ein konkreter Tipp (Anreise, beste Uhrzeit, reservieren)", "checkDate": true wenn es eine Veranstaltung mit Termin ist}`;
+
+let ctl = null;
+function busy(on, statusEl, text) {
+  $("#btnAi").disabled = on; $("#btnEvAi").disabled = on; $("#btnStop").hidden = !on;
+  statusEl.textContent = text || "";
+}
+function sampleErr(e) {
+  const c = e && e.code;
+  if (c === "cancelled") return "Abgebrochen.";
+  if (c === "not_granted" || c === "sampling_disabled" || c === "not_declared" || c === "capability_disabled" || c === "capability_removed") {
+    sample = null; applyMode(); return "Claude ist hier nicht freigegeben. Der Pool funktioniert trotzdem.";
+  }
+  if (c === "rate_limited") return "Gerade zu viele Anfragen. Kurz warten und nochmal probieren.";
+  if (c === "session_expired") return "Bitte neu bei Claude anmelden.";
+  if (c === "invalid_json") return "Die Antwort war unvollständig. Einfach nochmal generieren.";
+  if (c === "refused") return "Dazu kam keine Antwort. Den Zusatztext anders formulieren.";
+  return "Das hat nicht geklappt. Nochmal versuchen.";
+}
+async function askClaude() {
+  if (!sample) return;
+  const f = S.f, dist = DIST.find(d => d.k === f.dist);
+  const saved = S.ideas.map(i => i.title).slice(-60).join("; ");
+  const prompt = `Du planst Dates für ein Paar aus Schwerte (NRW, Kreis Unna, am Rand des Ruhrgebiets, nahe Dortmund, Hagen, Iserlohn, Sauerland).
+Heute ist ${todayTxt}. Beachte Jahreszeit, Wetter-Typ der Saison und Wochentag.
+
+Das Paar:
+${coupleText()}
+
+Wünsche für dieses Date:
+- Entfernung ab Schwerte: höchstens ${dist.max} km (${dist.label})
+- Budget für beide zusammen: ${f.budget === 3 ? "egal, darf auch mehr kosten" : "höchstens " + BUDGET_TXT[f.budget]}
+- Zeit: ${DUR.find(d => d.v === f.dur).label}
+- Stimmung: ${f.moods.length ? f.moods.join(", ") : "offen, gern gemischt"}
+- Drinnen/draußen: ${f.io}
+- Wann: ${$("#f-when").value}
+${$("#f-extra").value.trim() ? "- Zusätzlich: " + $("#f-extra").value.trim().slice(0, 300) : ""}
+
+Schon in ihrer Sammlung (nicht wiederholen): ${saved || "noch nichts"}
+
+Regeln:
+- Nur echte, existierende Orte und Locations mit Namen. Nichts erfinden. Wenn du bei einem konkreten Laden unsicher bist, nimm einen bekannten Ort oder beschreibe die Art der Location mit Stadt.
+- Veranstaltungen nur, wenn es bekannte wiederkehrende Formate zur passenden Jahreszeit sind, dann checkDate: true.
+- Mischung: mindestens eine sehr günstige Idee und eine, auf die sie selbst nicht gekommen wären.
+- Deutsch, locker, direkt an die beiden gerichtet.
+
+Antworte NUR mit einem JSON-Array aus genau 5 Objekten in dieser Form:
+${IDEA_SHAPE}`;
+  ctl = new AbortController();
+  busy(true, $("#genStatus"), "Claude überlegt… (dauert meist 10–40 Sekunden)");
+  try {
+    const arr = await sample.json(prompt, {signal:ctl.signal, cache:false});
+    const list = (Array.isArray(arr) ? arr : []).filter(x => x && x.title).map(x => ({...cleanIdea(x), source:"ki"}));
+    S.results = list; S.resultsKind = "ki"; S.resultsTitle = list.length ? "Frisch von Claude" : "";
+    busy(false, $("#genStatus"), list.length ? "" : "Keine brauchbaren Ideen bekommen. Nochmal versuchen.");
+    renderResults();
+    $("#genResults").scrollIntoView({behavior:"smooth", block:"start"});
+  } catch (e) {
+    busy(false, $("#genStatus"), sampleErr(e));
+  }
+}
+function cleanIdea(x) {
+  const n = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : null;
+  return {
+    title:String(x.title).slice(0,120), place:String(x.place || "").slice(0,120), city:String(x.city || "").slice(0,60),
+    km:n(x.km), budget:Math.min(3, n(x.budget) ?? 1), cost:String(x.cost || "").slice(0,60), duration:String(x.duration || "").slice(0,40),
+    moods:Array.isArray(x.moods) ? x.moods.map(String).slice(0,4) : [], io:String(x.io || ""), desc:String(x.desc || "").slice(0,500),
+    tip:String(x.tip || "").slice(0,300), checkDate:!!x.checkDate,
+  };
+}
+async function askEvents() {
+  if (!sample) return;
+  const city = $("#ev-city").value;
+  const prompt = `Heute ist ${todayTxt}. Ein Paar aus Schwerte (NRW) sucht Veranstaltungen und saisonale Highlights ${$("#ev-when").value}, rund um ${city} (höchstens ca. 60 km ab Schwerte).
+${coupleText()}
+
+Nenne 6 bekannte, WIEDERKEHRENDE Veranstaltungen, Märkte, Feste, Saison-Angebote oder feste Programmreihen, die typischerweise in diesem Zeitraum oder dieser Jahreszeit stattfinden (z. B. Kirmes, Weihnachtsmärkte, Lichtfeste, Kürbisfeste, Konzertreihen, Eislaufbahnen). Nur Dinge, die es wirklich gibt. Keine exakten Daten erfinden, nenne nur den typischen Zeitraum im Feld "duration".
+Antworte NUR mit einem JSON-Array aus 6 Objekten in dieser Form (checkDate immer true):
+${IDEA_SHAPE}`;
+  ctl = new AbortController();
+  busy(true, $("#evStatus"), "Claude sucht saisonale Highlights…");
+  try {
+    const arr = await sample.json(prompt, {signal:ctl.signal, cache:{gcTime:3600000}});
+    S.evResults = (Array.isArray(arr) ? arr : []).filter(x => x && x.title).map(x => ({...cleanIdea(x), checkDate:true, source:"ki"}));
+    busy(false, $("#evStatus"), S.evResults.length ? "" : "Nichts Brauchbares bekommen. Nochmal versuchen.");
+    renderEvents();
+  } catch (e) { busy(false, $("#evStatus"), sampleErr(e)); }
+}
+$("#btnAi").onclick = askClaude;
+$("#btnEvAi").onclick = askEvents;
+$("#btnStop").onclick = () => ctl?.abort();
+$("#btnPool").onclick = rollPool;
+
+/* ---------- Cards ---------- */
+function card(i, opts = {}) {
+  const saved = opts.saved;
+  const meta = [
+    i.km != null ? `<span class="m km">≈ ${esc(i.km)} km</span>` : "",
+    i.budget != null ? `<span class="m" title="${esc(BUDGET_TXT[i.budget] || "")}">${esc(i.cost || BUDGET_SIGN[i.budget])}</span>` : "",
+    i.duration ? `<span class="m">${esc(i.duration)}</span>` : "",
+    i.io ? `<span class="m">${esc(i.io)}</span>` : "",
+    i.checkDate ? `<span class="m check">Termin prüfen</span>` : "",
+    saved && i.status === "gemacht" ? `<span class="m done">✓ gemacht</span>` : "",
+  ].join("");
+  const where = [i.place, i.city].filter(Boolean).join(" · ");
+  const q = [i.place || i.title, i.city, i.checkDate ? "Termine " + now.getFullYear() : ""].filter(Boolean).join(" ");
+  let foot = `<a class="btn small" href="${mapsUrl(i)}" target="_blank" rel="noopener">Karte</a>
+    <a class="btn small" href="${searchUrl(q)}" target="_blank" rel="noopener">Infos</a><span class="spacer"></span>`;
+  if (!saved) {
+    const already = isSaved(i.title);
+    foot += `<button class="btn small ${already ? "" : "primary"}" data-act="save" data-k="${opts.key}" ${already ? "disabled" : ""}>${already ? "Gespeichert" : "Merken"}</button>`;
+  } else {
+    const del = S.confirmDel === i.id;
+    foot += `<button class="btn small fav" data-act="fav" data-id="${esc(i.id)}" aria-pressed="${!!i.fav}" aria-label="Favorit">${i.fav ? "♥" : "♡"}</button>
+      <button class="btn small" data-act="done" data-id="${esc(i.id)}">${i.status === "gemacht" ? "Wieder offen" : "Gemacht"}</button>
+      <button class="btn small ghost" data-act="del" data-id="${esc(i.id)}">${del ? "Wirklich löschen?" : "Löschen"}</button>`;
+  }
+  const stars = saved && i.status === "gemacht"
+    ? `<div class="row"><span class="note">Wie war's?</span><span class="stars">${[1,2,3,4,5].map(n => `<button data-act="rate" data-id="${esc(i.id)}" data-n="${n}" class="${n <= (i.rating || 0) ? "on" : ""}" aria-label="${n} Sterne">★</button>`).join("")}</span></div>` : "";
+  const by = saved && i.addedBy ? `<div class="by">gemerkt von ${esc(i.addedBy)}${i.source === "ki" ? " · Idee von Claude" : i.source === "pool" ? " · aus dem Pool" : ""}</div>` : "";
+  return `<article class="ticket ${S.pickedId && S.pickedId === i.id ? "picked" : ""}" id="${saved ? "idea-" + esc(i.id) : ""}">
+    <div class="t-head"><h3>${esc(i.title)}</h3>${where ? `<div class="t-where">${esc(where)}</div>` : ""}</div>
+    <div class="t-body">
+      ${meta ? `<div class="meta">${meta}</div>` : ""}
+      ${i.desc ? `<p class="t-desc">${esc(i.desc)}</p>` : ""}
+      ${i.tip ? `<p class="t-tip"><b>Tipp:</b> ${esc(i.tip)}</p>` : ""}
+      ${stars}${by}
+    </div>
+    <div class="t-foot">${foot}</div>
+  </article>`;
+}
+
+function renderResults() {
+  const el = $("#genResults");
+  if (!S.results.length) { el.innerHTML = ""; return; }
+  el.innerHTML = `<div class="res-head"><h2>${esc(S.resultsTitle)}</h2>
+    <button class="btn small" id="again">${S.resultsKind === "ki" ? "Andere Ideen" : "Nochmal würfeln"}</button></div>
+    <div class="grid">${S.results.map((r, k) => card(r, {key:"g" + k})).join("")}</div>`;
+  $("#again").onclick = S.resultsKind === "ki" ? askClaude : rollPool;
+}
+function renderEvents() {
+  $("#evResults").innerHTML = S.evResults.map((r, k) => card(r, {key:"e" + k})).join("");
+}
+
+function renderColl() {
+  const f = S.collFilter;
+  const all = [...S.ideas].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const list = all.filter(i => f === "alle" ? true : f === "fav" ? i.fav : f === "gemacht" ? i.status === "gemacht" : i.status !== "gemacht");
+  const cnt = {alle:all.length, offen:all.filter(i => i.status !== "gemacht").length, fav:all.filter(i => i.fav).length, gemacht:all.filter(i => i.status === "gemacht").length};
+  chipRow($("#collFilter"), [{v:"offen",label:`Offen · ${cnt.offen}`},{v:"fav",label:`Favoriten · ${cnt.fav}`},{v:"gemacht",label:`Gemacht · ${cnt.gemacht}`},{v:"alle",label:`Alle · ${cnt.alle}`}],
+    x => x.v === f, x => { S.collFilter = x.v; S.pickedId = null; renderColl(); });
+  $("#collCount").textContent = cnt.offen;
+  $("#collList").innerHTML = list.length ? list.map(i => card(i, {saved:true})).join("")
+    : `<div class="empty">${all.length ? "Hier ist gerade nichts." : "Noch keine Ideen gemerkt. Generiert welche unter „Ideen finden“ und tippt auf „Merken“."}</div>`;
+  $("#btnSurprise").disabled = !cnt.offen;
+}
+$("#btnSurprise").onclick = () => {
+  const open = S.ideas.filter(i => i.status !== "gemacht");
+  if (!open.length) return;
+  const favs = open.filter(i => i.fav), bag = [...open, ...favs]; // Favoriten doppelt im Lostopf
+  S.pickedId = bag[Math.floor(Math.random() * bag.length)].id;
+  S.collFilter = "offen"; renderColl();
+  document.getElementById("idea-" + S.pickedId)?.scrollIntoView({behavior:"smooth", block:"center"});
+};
+
+/* Card actions (delegiert) */
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const act = b.dataset.act, id = b.dataset.id;
+  try {
+    if (act === "save") {
+      const k = b.dataset.k, src = k[0] === "g" ? S.results : S.evResults, idea = src[+k.slice(1)];
+      if (!idea || isSaved(idea.title)) return;
+      b.disabled = true; b.textContent = "Speichere…";
+      await store.add(idea);
+      b.textContent = "Gespeichert"; b.classList.remove("primary");
+    } else if (act === "fav") {
+      const i = S.ideas.find(x => x.id === id); await store.update(id, {fav:!i.fav});
+    } else if (act === "done") {
+      const i = S.ideas.find(x => x.id === id);
+      await store.update(id, i.status === "gemacht" ? {status:"offen"} : {status:"gemacht", doneAt:Date.now()});
+    } else if (act === "rate") {
+      await store.update(id, {rating:+b.dataset.n});
+    } else if (act === "del") {
+      if (S.confirmDel !== id) { S.confirmDel = id; renderColl(); return; }
+      S.confirmDel = null; await store.remove(id);
+    }
+  } catch (err) {
+    flash(err && err.code === "invalid_argument" ? "Du hast hier nur Leserechte." : err && err.code === "quota_exceeded" ? "Speicher voll. Alte Ideen löschen." : "Speichern hat nicht geklappt. Nochmal versuchen.");
+  }
+});
+function flash(t) { const s = $("#genStatus"); s.textContent = t; setTimeout(() => { if (s.textContent === t) s.textContent = ""; }, 4000); }
+
+/* Eigene Idee */
+$("#addForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const km = $("#a-km").value === "" ? null : Math.max(0, Math.round(+$("#a-km").value));
+  const idea = {title:$("#a-title").value.trim(), place:$("#a-place").value.trim(), city:$("#a-city").value.trim(),
+    budget:+$("#a-budget").value, km, desc:$("#a-desc").value.trim(), tip:"", duration:"", io:"", moods:[], checkDate:false, source:"manuell"};
+  if (!idea.title) return;
+  try { await store.add(idea); e.target.reset(); $("#addBox").open = false; S.collFilter = "offen"; renderColl(); }
+  catch { flash("Speichern hat nicht geklappt."); }
+});
+
+/* ---------- Events-Links ---------- */
+$("#ev-city").innerHTML = CITIES.map(([c]) => `<option>${c}</option>`).join("");
+function renderEvLinks() {
+  const city = $("#ev-city").value, when = $("#ev-when").value, dom = (CITIES.find(c => c[0] === city) || [])[1];
+  const links = [
+    ["Veranstaltungen", searchUrl(`Veranstaltungen ${city} ${when}`)],
+    ["Konzerte & Tickets", "https://www.eventim.de/search/?searchterm=" + encodeURIComponent(city)],
+    ["Stadtportal", searchUrl(`site:${dom} Veranstaltungen`)],
+    ["Kinoprogramm", searchUrl(`Kinoprogramm ${city} ${when}`)],
+    ["Märkte & Feste", searchUrl(`Markt Fest ${city} ${when} ${now.getFullYear()}`)],
+    ["Ruhr-Guide", searchUrl(`site:ruhr-guide.de ${city}`)],
+  ];
+  $("#evLinks").innerHTML = links.map(([l, u]) => `<a class="btn small" href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join("");
+}
+$("#ev-city").onchange = renderEvLinks; $("#ev-when").onchange = renderEvLinks;
+
+/* ---------- Profil ---------- */
+const PF = {n1:"#p-n1", i1:"#p-i1", n2:"#p-n2", i2:"#p-i2", both:"#p-both", no:"#p-no", food:"#p-food", mob:"#p-mob"};
+let profDirty = false;
+$("#profForm").addEventListener("input", () => { profDirty = true; });
+function fillProfile() {
+  if (profDirty) return;
+  for (const [k, sel] of Object.entries(PF)) $(sel).value = S.couple[k] ?? "";
+}
+$("#profForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const c = {}; for (const [k, sel] of Object.entries(PF)) c[k] = $(sel).value.trim().slice(0, 800);
+  $("#profStatus").textContent = "Speichere…";
+  try { await store.saveCouple(c); profDirty = false; S.couple = {...DEFAULT_COUPLE, ...c}; renderMe(); $("#profStatus").textContent = "Gespeichert."; }
+  catch (err) { $("#profStatus").textContent = err && err.code === "invalid_argument" ? "Nur Leserechte, Speichern nicht möglich." : "Hat nicht geklappt. Nochmal versuchen."; }
+});
+
+/* ---------- Ich bin ---------- */
+function renderMe() {
+  const [a, b] = names();
+  $("#meSeg").innerHTML = `<button type="button" data-me="1" aria-pressed="${S.me !== 2}">${esc(a)}</button><button type="button" data-me="2" aria-pressed="${S.me === 2}">${esc(b)}</button>`;
+}
+$("#meSeg").onclick = e => { const b = e.target.closest("button[data-me]"); if (!b) return; S.me = +b.dataset.me; lsSet("me", S.me); renderMe(); };
+
+/* ---------- Tabs ---------- */
+function setTab(t) {
+  S.tab = t; lsSet("tab", t);
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  for (const v of ["gen", "coll", "ev", "prof"]) $("#view-" + v).hidden = v !== t;
+}
+document.querySelector(".tabs").onclick = e => { const b = e.target.closest("button[data-tab]"); if (b) setTab(b.dataset.tab); };
+
+/* ---------- Modus ---------- */
+function applyMode() {
+  const ban = $("#modeBanner");
+  if (mode === "local") {
+    ban.hidden = false; ban.className = "banner warn";
+    ban.textContent = "Offline-Modus: Eure Sammlung wird gerade nur in diesem Browser gespeichert.";
+  } else ban.hidden = true;
+  $("#btnAi").hidden = !sample; $("#btnEvAi").hidden = !sample;
+  if (!sample && mode !== "loading") $("#btnPool").classList.add("primary");
+}
+function renderAll() { renderRadar(); renderColl(); renderResults(); renderEvents(); fillProfile(); renderMe(); }
+
+/* ---------- Start ---------- */
+$("#today").textContent = "Ab Schwerte · " + todayTxt;
+setTab(["gen","coll","ev","prof"].includes(lsGet("tab","gen")) ? lsGet("tab","gen") : "gen");
+renderFilters(); renderEvLinks();
+S.results = poolMatches(true).sort(() => Math.random() - .5).slice(0, 3).map(poolToIdea);
+S.resultsKind = "pool"; S.resultsTitle = "Passt gerade zu euren Filtern";
+renderAll();
+
+(async () => {
+  const c = window.claude;
+  if (c && typeof c.use === "function") {
+    [db, sample] = await Promise.all([c.use("db").catch(() => null), c.use("sample").catch(() => null)]);
+  }
+  if (db) {
+    mode = "db";
+    db.collection("ideas").onSnapshot(snap => {
+      S.ideas = snap.docs.map(d => ({id:d.id, ...d.data()}));
+      renderColl(); renderRadar(); renderResults(); renderEvents();
+    }, () => { mode = "local"; applyMode(); });
+    db.doc("settings/couple").onSnapshot(s => {
+      if (s.exists) { S.couple = {...DEFAULT_COUPLE, ...s.data()}; fillProfile(); renderMe(); }
+    }, () => {});
+  } else {
+    mode = "local";
+    S.ideas = lsGet("ideas", []); S.couple = {...DEFAULT_COUPLE, ...lsGet("couple", {})};
+    renderAll();
+  }
+  applyMode();
+})();
+})();
+</script>
