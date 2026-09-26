@@ -65,7 +65,7 @@ a{color:inherit}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:2px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:15px}
 .chip[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
-.input{width:100%;background:var(--bg);border:2px solid transparent;border-radius:14px;padding:12px 14px}
+.input{width:100%;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 14px}
 .input:focus{border-color:var(--blue);outline:none}
 textarea.input{min-height:84px;resize:vertical}
 details.more summary{cursor:pointer;color:var(--blue);font-weight:700;list-style:none;display:flex;align-items:center;gap:6px}
@@ -160,6 +160,33 @@ details.more .q{margin-top:16px}
 .nav button[aria-selected="true"]{color:var(--blue)}
 .nav .badge{position:absolute;top:8px;left:calc(50% + 8px);background:var(--orange);color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 5px}
 .fab{position:fixed;right:max(16px,calc(50% - 344px));bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0px));z-index:9;border:0;background:var(--orange);color:#fff;border-radius:999px;padding:14px 18px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;display:flex;gap:6px;align-items:center}
+/* Start & Schritte */
+.hero{background:var(--blue);color:var(--on-blue);border-radius:26px;padding:28px 22px;margin-top:22px;display:grid;gap:8px}
+.hero h2{font-size:clamp(26px,7vw,34px);font-weight:800}
+.hero p{margin:0;opacity:.85}
+.startbtns{display:grid;gap:12px;margin-top:16px}
+.bigchoice{border:0;border-radius:22px;padding:20px;text-align:left;cursor:pointer;display:flex;gap:16px;align-items:center;background:var(--surface);box-shadow:var(--shadow)}
+.bigchoice .ico{width:30px;height:30px;flex:none}
+.bigchoice b{display:block;font-size:19px;font-family:var(--display)}
+.bigchoice span{color:var(--muted);font-size:15px}
+.bigchoice.blue .ico{color:var(--blue)}
+.bigchoice.orange .ico{color:var(--orange)}
+.step{margin-top:22px;display:grid;gap:18px}
+.progress{display:flex;gap:6px}
+.progress i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress i.on{background:var(--blue)}
+.step h2{font-size:clamp(26px,7vw,32px);font-weight:800}
+.step .tiles{grid-template-columns:1fr 1fr}
+.step .tile{min-height:92px;padding:16px;border-radius:20px}
+.step .tile b{font-size:18px}
+.step .chip{padding:12px 18px;font-size:16px}
+.back{background:none;border:0;color:var(--muted);font-weight:700;cursor:pointer;padding:8px 0;justify-self:start}
+.counter{color:var(--muted);font-weight:700;font-size:14px}
+.one{margin-top:16px;display:grid;gap:12px}
+.one .card{padding:22px;border-radius:24px}
+.one .card h3{font-size:24px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo .btn{padding:16px;font-size:16px;border-radius:18px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;z-index:30;font-size:15px;max-width:calc(100% - 32px);text-align:center}
 </style>
 
@@ -193,44 +220,6 @@ details.more .q{margin-top:16px}
 
   <!-- ============ ENTDECKEN ============ -->
   <section id="view-gen">
-    <div class="block">
-      <div class="q">
-        <div class="q-title">Wie weit wollt ihr fahren?</div>
-        <div class="tiles" id="f-dist"></div>
-      </div>
-      <div class="q">
-        <div class="q-title">Wie viel darf es kosten?</div>
-        <div class="tiles" id="f-budget"></div>
-      </div>
-      <div class="q">
-        <div class="q-title">Worauf habt ihr Lust?</div>
-        <div class="chips" id="f-mood"></div>
-      </div>
-      <details class="more" id="moreBox">
-        <summary>Mehr Wünsche</summary>
-        <div class="q">
-          <div class="q-title">Wie viel Zeit habt ihr?</div>
-          <div class="chips" id="f-dur"></div>
-        </div>
-        <div class="q">
-          <div class="q-title">Drinnen oder draußen?</div>
-          <div class="chips" id="f-io"></div>
-        </div>
-        <div class="q">
-          <div class="q-title">Wann?</div>
-          <div class="chips" id="f-when"></div>
-        </div>
-        <div class="q">
-          <label class="q-title" for="f-extra">Noch was Besonderes?</label>
-          <input class="input" id="f-extra" placeholder="z. B. es regnet, wir haben Hunger, etwas Neues">
-        </div>
-      </details>
-      <div>
-        <button class="btn big" id="btnFind"><svg class="ico"><use href="#i-spark"/></svg>Ideen finden</button>
-        <div class="center" style="margin-top:8px"><button class="link" id="btnPool"><svg class="ico"><use href="#i-dice"/></svg>Schnell würfeln</button></div>
-      </div>
-    </div>
-
     <div id="genOut"></div>
   </section>
 
@@ -388,7 +377,7 @@ const lsSet = (k, v) => { try { localStorage.setItem(LS + k, JSON.stringify(v));
 const S = {
   f: Object.assign({dist:2, budget:2, dur:"abend", moods:[], io:"egal", when:"Am Wochenende"}, lsGet("filters", {})),
   ideas: [], couple: {...DEFAULT_COUPLE}, me: lsGet("me", 1),
-  collFilter: "offen", results: [], resultsTitle: "", resultsKind: "", genState: "idle", genMsg: "",
+  collFilter: "offen", results: [], resultsKind: "", genMsg: "", view: "start", step: 0, idx: 0,
   evResults: [], evState: "idle", evMsg: "", evCity: "Dortmund", evWhen: "dieses Wochenende",
   pickedId: null, confirmDel: null, addBudget: 1,
 };
@@ -451,15 +440,8 @@ function chips(el, items, isOn, onPick) {
   el.innerHTML = items.map((it, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="${isOn(it)}">${esc(it.label)}</button>`).join("");
   el.onclick = e => { const b = e.target.closest("[data-i]"); if (b) onPick(items[+b.dataset.i]); };
 }
-function setF(k, v) { S.f[k] = v; lsSet("filters", S.f); renderFilters(); }
-function renderFilters() {
-  tiles($("#f-dist"), DIST, d => d.k === S.f.dist, d => setF("dist", d.k));
-  tiles($("#f-budget"), BUDGET, b => b.v === S.f.budget, b => setF("budget", b.v));
-  chips($("#f-mood"), MOODS, m => S.f.moods.includes(m.v), m => setF("moods", S.f.moods.includes(m.v) ? S.f.moods.filter(x => x !== m.v) : [...S.f.moods, m.v]));
-  chips($("#f-dur"), DUR, d => d.v === S.f.dur, d => setF("dur", d.v));
-  chips($("#f-io"), IO, o => o.v === S.f.io, o => setF("io", o.v));
-  chips($("#f-when"), WHEN.map(w => ({v:w, label:w})), w => w.v === S.f.when, w => setF("when", w.v));
-}
+function setF(k, v) { S.f[k] = v; lsSet("filters", S.f); }
+const STEPS = ["dist", "budget", "dur", "mood"];
 
 /* ---------- Pool ---------- */
 function poolMatches(strict) {
@@ -473,11 +455,15 @@ function poolMatches(strict) {
 function rollPool(note) {
   let list = poolMatches(true), loose = false;
   if (list.length < 3) { list = poolMatches(false); loose = true; }
-  S.results = shuffle(list).slice(0, 3).map(poolToIdea);
-  S.resultsKind = "pool"; S.genState = "done";
-  S.resultsTitle = loose ? "Das kommt am nächsten ran" : "Eure Vorschläge";
-  S.genMsg = note || (S.results.length ? "" : "Dafür haben wir gerade nichts. Wählt einen größeren Umkreis oder mehr Budget.");
-  renderGen();
+  showResults(shuffle(list).slice(0, 6).map(poolToIdea), "pool",
+    note || (list.length ? (loose ? "Nicht alles passt ganz genau, aber das kommt nah ran." : "") : "Dafür haben wir gerade nichts. Probiert einen größeren Umkreis oder mehr Budget."));
+}
+function surprise() {
+  const list = POOL.filter(p => p.km <= 75 && (!p.mo.length || p.mo.includes(month)));
+  showResults(shuffle(list).slice(0, 8).map(poolToIdea), "surprise", "");
+}
+function showResults(list, kind, msg) {
+  S.results = list; S.resultsKind = kind; S.idx = 0; S.genMsg = msg; S.view = "results"; renderGen(); window.scrollTo({top:0});
 }
 
 /* ---------- Ideen von Claude ---------- */
@@ -498,10 +484,10 @@ function friendlyErr(e) {
   return "Das hat gerade nicht geklappt. Hier ein paar Ideen aus dem Pool:";
 }
 async function findIdeas() {
-  if (!sample) { rollPool(); scrollToOut(); return; }
+  if (!sample) { rollPool(); return; }
   const f = S.f, dist = DIST.find(d => d.k === f.dist);
   const saved = S.ideas.map(i => i.title).slice(-60).join("; ");
-  const extra = $("#f-extra").value.trim().slice(0, 300);
+  const extra = String(S.f.extra || "").trim().slice(0, 300);
   const prompt = `Du planst Dates für ein Paar aus Schwerte (NRW, Kreis Unna, am Rand des Ruhrgebiets, nahe Dortmund, Hagen, Iserlohn, Sauerland).
 Heute ist ${todayTxt}. Beachte Jahreszeit und Wochentag.
 
@@ -513,9 +499,7 @@ Wünsche für dieses Date:
 - Budget für beide zusammen: ${f.budget === 3 ? "egal, darf auch mehr kosten" : "höchstens " + BUDGET_TXT[f.budget]}
 - Zeit: ${DUR.find(d => d.v === f.dur).label}
 - Stimmung: ${f.moods.length ? f.moods.join(", ") : "offen, gern gemischt"}
-- Drinnen/draußen: ${f.io}
-- Wann: ${f.when}
-${extra ? "- Zusätzlich: " + extra : ""}
+${extra ? "- Ihr Wunsch: " + extra : ""}
 
 Schon auf ihrer Merkliste (nicht wiederholen): ${saved || "noch nichts"}
 
@@ -528,18 +512,17 @@ Regeln:
 Antworte NUR mit einem JSON-Array aus genau 5 Objekten in dieser Form:
 ${IDEA_SHAPE}`;
   ctl = new AbortController();
-  S.genState = "loading"; S.genMsg = ""; renderGen(); scrollToOut();
+  S.view = "loading"; renderGen(); window.scrollTo({top:0});
   try {
     const arr = await sample.json(prompt, {signal:ctl.signal, cache:false});
     const list = (Array.isArray(arr) ? arr : []).filter(x => x && x.title).map(x => ({...cleanIdea(x), source:"ki"}));
     if (!list.length) { rollPool("Da kam nichts Brauchbares zurück. Hier Ideen aus dem Pool:"); return; }
-    S.results = list; S.resultsKind = "ki"; S.resultsTitle = "Ideen für euch"; S.genState = "done"; renderGen();
+    showResults(list, "ki", "");
   } catch (e) {
-    if (e && e.code === "cancelled") { S.genState = S.results.length ? "done" : "idle"; renderGen(); return; }
+    if (e && e.code === "cancelled") { S.view = "start"; renderGen(); return; }
     rollPool(friendlyErr(e));
   }
 }
-function scrollToOut() { requestAnimationFrame(() => $("#genOut").scrollIntoView({behavior:"smooth", block:"start"})); }
 function cleanIdea(x) {
   const n = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : null;
   return {title:String(x.title).slice(0,120), place:String(x.place || "").slice(0,120), city:String(x.city || "").slice(0,60),
@@ -568,8 +551,6 @@ ${IDEA_SHAPE}`;
   }
   renderEv();
 }
-$("#btnFind").onclick = findIdeas;
-$("#btnPool").onclick = () => { rollPool(); scrollToOut(); };
 $("#btnEv").onclick = findEvents;
 
 /* ---------- Karten ---------- */
@@ -587,7 +568,9 @@ function card(i, opts = {}) {
   const saved = !!opts.saved, where = [i.place, i.city].filter(Boolean).join(", ");
   const q = [i.place || i.title, i.city, i.checkDate ? "Termine " + now.getFullYear() : ""].filter(Boolean).join(" ");
   let actions = "";
-  if (!saved) {
+  if (opts.single) {
+    actions = "";
+  } else if (!saved) {
     const s = isSaved(i.title);
     actions = `<button class="btn small save ${s ? "done" : ""}" data-act="save" data-k="${opts.key}" ${s ? "disabled" : ""}>${icon(s ? "check" : "heart")}${s ? "Gemerkt" : "Merken"}</button>`;
   } else {
@@ -617,15 +600,69 @@ function loadingBox(text) {
   return `<div class="loading"><div class="dots"><i></i><i></i><i></i></div><b>${esc(text)}</b><span class="muted small-text">Das dauert meist 10 bis 30 Sekunden.</span><button class="btn small line" data-act="stop">Abbrechen</button></div>`;
 }
 
+function stepView() {
+  const k = STEPS[S.step], prog = `<div class="progress">${STEPS.map((_, n) => `<i class="${n <= S.step ? "on" : ""}"></i>`).join("")}</div>`;
+  const tileHtml = (items, isOn) => `<div class="tiles">${items.map((it, n) => `<button type="button" class="tile" data-pick="${n}" aria-pressed="${isOn(it)}"><b>${esc(it.label)}</b>${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("")}</div>`;
+  let body = "";
+  if (k === "dist") body = `<h2>Wie weit wollt ihr fahren?</h2>` + tileHtml(DIST, d => d.k === S.f.dist);
+  if (k === "budget") body = `<h2>Wie viel darf es kosten?</h2>` + tileHtml(BUDGET, b => b.v === S.f.budget);
+  if (k === "dur") body = `<h2>Wie viel Zeit habt ihr?</h2>` + tileHtml(DUR.map(d => ({...d, sub:{h:"z. B. nachmittags",abend:"nach Feierabend",tag:"von früh bis spät",we:"mit Übernachtung"}[d.v]})), d => d.v === S.f.dur);
+  if (k === "mood") body = `<h2>Worauf habt ihr Lust?</h2>
+    <p class="muted" style="margin:-8px 0 0">Tippt an, was passt. Mehreres geht auch.</p>
+    <div class="chips">${MOODS.map((m, n) => `<button type="button" class="chip" data-mood="${n}" aria-pressed="${S.f.moods.includes(m.v)}">${esc(m.label)}</button>`).join("")}</div>
+    <label class="field"><span>Noch ein Wunsch? <span class="muted" style="font-weight:500">(optional)</span></span>
+      <input class="input" id="f-extra" value="${esc(S.f.extra || "")}" placeholder="z. B. lieber drinnen, heute Abend, was Neues"></label>
+    <button class="btn big" data-g="find">${icon("spark")}Ideen zeigen</button>`;
+  return `<div class="step">${prog}<button class="back" data-g="back">← Zurück</button>${body}</div>`;
+}
 function renderGen() {
   const el = $("#genOut");
-  $("#btnFind").disabled = S.genState === "loading";
-  if (S.genState === "loading") { el.innerHTML = `<div style="margin-top:24px">${loadingBox("Wir suchen was Schönes für euch…")}</div>`; return; }
-  el.innerHTML = (S.genMsg ? `<div class="msg" style="margin-top:24px">${esc(S.genMsg)}</div>` : "") +
-    (S.results.length ? `<div class="sec-head"><h2>${esc(S.resultsTitle)}</h2><button class="link" id="again">${icon("dice")}Andere zeigen</button></div>
-    <div class="cards">${S.results.map((r, k) => card(r, {key:"g" + k})).join("")}</div>` : "");
-  const a = $("#again"); if (a) a.onclick = () => S.resultsKind === "ki" ? findIdeas() : rollPool();
+  if (S.view === "step") { el.innerHTML = stepView(); return; }
+  if (S.view === "loading") { el.innerHTML = `<div style="margin-top:24px">${loadingBox("Wir suchen was Schönes für euch…")}</div>`; return; }
+  if (S.view === "results" && S.results.length) {
+    const i = S.results[S.idx], last = S.idx >= S.results.length - 1, s = isSaved(i.title);
+    el.innerHTML = `<div class="one">
+      <div class="row" style="display:flex;justify-content:space-between;align-items:center">
+        <button class="back" data-g="home">← Start</button><span class="counter">Idee ${S.idx + 1} von ${S.results.length}</span></div>
+      ${S.genMsg ? `<div class="msg">${esc(S.genMsg)}</div>` : ""}
+      ${card(i, {single:true})}
+      <div class="duo">
+        <button class="btn save ${s ? "done" : ""}" data-act="save" data-k="g${S.idx}" ${s ? "disabled" : ""}>${icon(s ? "check" : "heart")}${s ? "Gemerkt" : "Merken"}</button>
+        ${last ? `<button class="btn" data-g="more">${icon("dice")}Neue Ideen</button>` : `<button class="btn" data-g="next">Nächste Idee →</button>`}
+      </div>
+    </div>`;
+    return;
+  }
+  const open = S.ideas.filter(x => x.status !== "gemacht").length;
+  el.innerHTML = `<div class="hero"><h2>Was machen wir?</h2><p>Ein paar Fragen, dann bekommt ihr Ideen. Oder lasst euch einfach überraschen.</p></div>
+    <div class="startbtns">
+      <button class="bigchoice blue" data-g="wizard">${icon("spark")}<div><b>Idee finden</b><span>4 kurze Fragen, passende Vorschläge</span></div></button>
+      <button class="bigchoice orange" data-g="surprise">${icon("dice")}<div><b>Überrasch uns</b><span>Sofort eine Idee, ohne Fragen</span></div></button>
+      ${open ? `<button class="bigchoice" data-go="coll">${icon("heart")}<div><b>Unsere Merkliste</b><span>${open} ${open === 1 ? "Idee wartet" : "Ideen warten"} auf euch</span></div></button>` : ""}
+    </div>`;
 }
+$("#genOut").addEventListener("click", e => {
+  const pick = e.target.closest("[data-pick]");
+  if (pick) {
+    const n = +pick.dataset.pick, k = STEPS[S.step];
+    if (k === "dist") setF("dist", DIST[n].k);
+    if (k === "budget") setF("budget", BUDGET[n].v);
+    if (k === "dur") setF("dur", DUR[n].v);
+    S.step++; renderGen(); return;
+  }
+  const mood = e.target.closest("[data-mood]");
+  if (mood) { const m = MOODS[+mood.dataset.mood].v; setF("moods", S.f.moods.includes(m) ? S.f.moods.filter(x => x !== m) : [...S.f.moods, m]); mood.setAttribute("aria-pressed", S.f.moods.includes(m)); return; }
+  const g = e.target.closest("[data-g]"); if (!g) return;
+  const a = g.dataset.g;
+  if (a === "wizard") { S.view = "step"; S.step = 0; renderGen(); }
+  else if (a === "surprise") surprise();
+  else if (a === "back") { if (S.step > 0) S.step--; else S.view = "start"; renderGen(); }
+  else if (a === "home") { S.view = "start"; renderGen(); }
+  else if (a === "find") findIdeas();
+  else if (a === "next") { S.idx++; renderGen(); }
+  else if (a === "more") { S.resultsKind === "ki" ? findIdeas() : S.resultsKind === "surprise" ? surprise() : rollPool(); }
+});
+$("#genOut").addEventListener("input", e => { if (e.target.id === "f-extra") S.f.extra = e.target.value; });
 
 function renderColl() {
   const f = S.collFilter, all = [...S.ideas].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
@@ -655,14 +692,13 @@ $("#btnSurprise").onclick = () => {
 function renderEv() {
   chips($("#evCity"), CITIES.map(([c]) => ({v:c, label:c})), c => c.v === S.evCity, c => { S.evCity = c.v; renderEv(); });
   chips($("#evWhen"), EV_WHEN.map(w => ({v:w, label:w[0].toUpperCase() + w.slice(1)})), w => w.v === S.evWhen, w => { S.evWhen = w.v; renderEv(); });
-  const c = S.evCity, w = S.evWhen, dom = (CITIES.find(x => x[0] === c) || [])[1];
+  const c = S.evCity, w = S.evWhen;
   const links = [
     ["search", `Veranstaltungen in ${c} suchen`, searchUrl(`Veranstaltungen ${c} ${w}`)],
     ["music", "Konzerte & Partys", searchUrl(`Konzert Party ${c} ${w}`)],
     ["ticket", "Tickets bei Eventim", "https://www.eventim.de/search/?searchterm=" + encodeURIComponent(c)],
     ["film", "Kinoprogramm", searchUrl(`Kinoprogramm ${c} ${w}`)],
     ["store", "Märkte & Feste", searchUrl(`Markt Fest ${c} ${w} ${now.getFullYear()}`)],
-    ["cal", `Veranstaltungskalender der Stadt`, searchUrl(`site:${dom} Veranstaltungen`)],
   ];
   $("#evLinks").innerHTML = links.map(([ic, l, u]) => `<a class="linkrow" href="${u}" target="_blank" rel="noopener">${icon(ic)}<span>${esc(l)}</span><span class="arrow">↗</span></a>`).join("");
   $("#btnEv").hidden = !sample;
@@ -753,15 +789,13 @@ function setTab(t) {
 }
 document.querySelector(".nav").onclick = e => { const b = e.target.closest("[data-tab]"); if (b) setTab(b.dataset.tab); };
 
-function renderLists() { renderColl(); renderGen(); if (S.evResults.length) renderEv(); }
+function renderLists() { renderColl(); if (S.view !== "step") renderGen(); if (S.evResults.length) renderEv(); }
 
 /* ---------- Start ---------- */
 $("#today").textContent = todayTxt + " · ab Schwerte";
 const startTab = lsGet("tab", "gen");
 setTab(["gen","coll","ev","prof"].includes(startTab) ? startTab : "gen");
-renderFilters(); renderWho(); fillProfile(); renderEv();
-S.results = shuffle(poolMatches(true)).slice(0, 3).map(poolToIdea);
-S.resultsKind = "pool"; S.resultsTitle = "Vorschläge für euch"; S.genState = "done";
+renderWho(); fillProfile(); renderEv();
 renderLists();
 
 (async () => {
