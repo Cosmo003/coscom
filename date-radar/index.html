@@ -340,6 +340,13 @@ const POOL = [
   {t:"Cranger Kirmes",p:"Crange",c:"Herne",km:30,b:2,d:"abend",io:"draußen",m:["abenteuer","aktiv"],mo:[8],desc:"Eine der größten Kirmessen Deutschlands: Riesenrad, Achterbahn, Pommes.",tip:"Anfang August. Mit der Bahn anreisen.",check:true},
   {t:"ExtraSchicht – Nacht der Industriekultur",p:"Spielorte im ganzen Ruhrgebiet",c:"Ruhrgebiet",km:30,b:2,d:"abend",io:"beides",m:["kultur","abenteuer"],mo:[6],desc:"Eine Nacht lang Zechen, Hallen und Halden mit Programm, Shuttlebusse inklusive.",tip:"Findet meist im Juni statt, Ticket gilt für alle Orte.",check:true},
   {t:"Freibad-Nachmittag im Elsebad",p:"Elsebad",c:"Schwerte",km:1,b:1,d:"h",io:"draußen",m:["entspannt","aktiv"],mo:[6,7,8],desc:"Schwimmen, Pommes, Sonnenliege. Sommer in Schwerte.",tip:"Öffnungszeiten der Saison vorher checken."},
+  {t:"Konzert oder Party im FZW",p:"FZW",c:"Dortmund",km:16,b:2,d:"abend",io:"drinnen",m:["party","abenteuer"],mo:[],desc:"Live-Konzerte und Partynächte mitten in Dortmund. Laut, voll, gute Stimmung.",tip:"Programm online checken, beliebte Konzerte sind schnell ausverkauft."},
+  {t:"Feiern in der Zeche Bochum",p:"Zeche Bochum",c:"Bochum",km:28,b:2,d:"abend",io:"drinnen",m:["party"],mo:[],desc:"Kultlocation für Konzerte und Partys. Richtig schick machen und die Nacht durchtanzen.",tip:"Mit der Bahn hin, dann muss keiner fahren."},
+  {t:"Großes Konzert in der Westfalenhalle",p:"Westfalenhalle",c:"Dortmund",km:14,b:3,d:"abend",io:"drinnen",m:["party","romantisch"],mo:[],desc:"Einen Star live sehen, den ihr beide mögt. Vorher Outfit planen, danach noch was essen.",tip:"Ticket als Überraschung kaufen und erst am Abend verraten, wohin es geht.",check:true},
+  {t:"Blaue Unterwasserwelt im Sea Life",p:"Sea Life",c:"Oberhausen",km:62,b:2,d:"h",io:"drinnen",m:["entspannt","romantisch"],mo:[],desc:"Durch den Glastunnel unter Haien und Rochen laufen. Alles blau und ruhig.",tip:"Online-Tickets sind günstiger. Danach ins CentrO nebenan bummeln."},
+  {t:"Ringe selbst schmieden",p:"Goldschmiede-Workshop",c:"Dortmund",km:15,b:3,d:"h",io:"drinnen",m:["romantisch","kultur"],mo:[],desc:"In einem Workshop schmiedet jede Person einen Ring für die andere. Schmuck mit Geschichte, der funkelt.",tip:"Nach „Ring selber schmieden Dortmund“ suchen und früh buchen."},
+  {t:"Schwarzlicht-Minigolf",p:"Schwarzlicht-Minigolf",c:"Ruhrgebiet",km:20,b:1,d:"h",io:"drinnen",m:["abenteuer","party"],mo:[],desc:"Alles leuchtet und glitzert im UV-Licht, dazu Musik. Albern und fotogen.",tip:"Weiße oder neonfarbene Kleidung anziehen, dann leuchtet ihr mit."},
+  {t:"Get-Ready-Abend mit Pasta",p:"Zu Hause, dann raus",c:"Schwerte",km:0,b:1,d:"abend",io:"beides",m:["party","kulinarisch","romantisch"],mo:[],desc:"Zusammen Nudeln kochen, laute Playlist an, in Ruhe fertig machen. Danach in eine Bar oder feiern.",tip:"Die Playlist baut ihr vorher zusammen, jede Person steuert 10 Songs bei."},
 ];
 
 const DIST = [
@@ -352,7 +359,7 @@ const BUDGET = [{v:0,label:"Gratis"},{v:1,label:"bis 20 €"},{v:2,label:"bis 50
 const BUDGET_TXT = ["gratis","bis 20 €","bis 50 €","mehr als 50 €"];
 const BUDGET_SIGN = ["0 €","€","€€","€€€"];
 const DUR = [{v:"h",label:"Ein paar Stunden"},{v:"abend",label:"Ein Abend"},{v:"tag",label:"Ganzer Tag"},{v:"we",label:"Wochenende mit Übernachtung"}];
-const MOODS = ["romantisch","entspannt","aktiv","kultur","kulinarisch","abenteuer"];
+const MOODS = ["romantisch","entspannt","aktiv","kultur","kulinarisch","abenteuer","party"];
 const IO = [{v:"egal",label:"Egal"},{v:"drinnen",label:"Drinnen"},{v:"draußen",label:"Draußen"}];
 const CITIES = [
   ["Schwerte","schwerte.de"],["Dortmund","dortmund.de"],["Hagen","hagen.de"],["Unna","unna.de"],
@@ -504,7 +511,7 @@ function coupleText() {
     `Unterwegs mit: ${c.mob || "Auto oder Bahn"}`,
   ].filter(Boolean).join("\n");
 }
-const IDEA_SHAPE = `{"title": "kurzer Titel", "place": "echter Name des Ortes/der Location", "city": "Stadt", "km": ca. Entfernung ab Schwerte als Zahl, "budget": 0|1|2|3 (0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr, für beide zusammen), "cost": "z. B. ca. 30 € zu zweit", "duration": "z. B. 2–3 Std.", "moods": ["romantisch"|"entspannt"|"aktiv"|"kultur"|"kulinarisch"|"abenteuer"], "io": "drinnen"|"draußen"|"beides", "desc": "2 Sätze, warum es zu genau diesem Paar passt", "tip": "ein konkreter Tipp (Anreise, beste Uhrzeit, reservieren)", "checkDate": true wenn es eine Veranstaltung mit Termin ist}`;
+const IDEA_SHAPE = `{"title": "kurzer Titel", "place": "echter Name des Ortes/der Location", "city": "Stadt", "km": ca. Entfernung ab Schwerte als Zahl, "budget": 0|1|2|3 (0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr, für beide zusammen), "cost": "z. B. ca. 30 € zu zweit", "duration": "z. B. 2–3 Std.", "moods": ["romantisch"|"entspannt"|"aktiv"|"kultur"|"kulinarisch"|"abenteuer"|"party"], "io": "drinnen"|"draußen"|"beides", "desc": "2 Sätze, warum es zu genau diesem Paar passt", "tip": "ein konkreter Tipp (Anreise, beste Uhrzeit, reservieren)", "checkDate": true wenn es eine Veranstaltung mit Termin ist}`;
 
 let ctl = null;
 function busy(on, statusEl, text) {
