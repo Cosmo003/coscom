@@ -2,310 +2,317 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --bg:#F5F0F1; --surface:#FFFFFF; --paper:#FFFBF8; --ink:#1E2230; --muted:#6B6470;
-  --line:#E3D8DB; --accent:#C23B58; --accent-soft:#F7DDE3; --accent-ink:#FFFFFF;
-  --moss:#2E6A58; --moss-soft:#DCEDE6; --sun:#C98A1E; --ring:#D9CBD0;
-  --shadow:0 1px 2px rgba(30,34,48,.06),0 6px 18px rgba(30,34,48,.06);
+  --bg:#F2F4FA; --surface:#FFFFFF; --soft:#E8ECF8; --ink:#141C33; --muted:#5E667C; --line:#DDE2EF;
+  --blue:#2F4BD8; --blue-soft:#E1E6FD; --on-blue:#FFFFFF;
+  --orange:#E8702A; --orange-soft:#FDE9DC;
+  --green:#1F7A5A; --green-soft:#DDF1E8;
+  --shadow:0 1px 2px rgba(20,28,51,.05),0 8px 24px rgba(20,28,51,.07);
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --nav-h:68px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#15131A; --surface:#201D26; --paper:#27232E; --ink:#F2ECEE; --muted:#A99FA9;
-    --line:#39333F; --accent:#EF6F8A; --accent-soft:#3E2230; --accent-ink:#1A0E12;
-    --moss:#72C2A7; --moss-soft:#1E3530; --sun:#EDBB5F; --ring:#3F3846;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+    --bg:#0D1222; --surface:#171E33; --soft:#1F2842; --ink:#EEF1FA; --muted:#9EA7C0; --line:#2A3452;
+    --blue:#7F95FF; --blue-soft:#232E58; --on-blue:#0D1222;
+    --orange:#FF9A55; --orange-soft:#3A2618;
+    --green:#6CCFA6; --green-soft:#16332A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#15131A; --surface:#201D26; --paper:#27232E; --ink:#F2ECEE; --muted:#A99FA9;
-  --line:#39333F; --accent:#EF6F8A; --accent-soft:#3E2230; --accent-ink:#1A0E12;
-  --moss:#72C2A7; --moss-soft:#1E3530; --sun:#EDBB5F; --ring:#3F3846;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  --bg:#0D1222; --surface:#171E33; --soft:#1F2842; --ink:#EEF1FA; --muted:#9EA7C0; --line:#2A3452;
+  --blue:#7F95FF; --blue-soft:#232E58; --on-blue:#0D1222;
+  --orange:#FF9A55; --orange-soft:#3A2618;
+  --green:#6CCFA6; --green-soft:#16332A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
-.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
-a{color:inherit}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);margin:0}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px calc(var(--nav-h) + 40px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
 button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
-/* Header */
-.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
-.brand h1{font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:-.02em}
-.brand h1 span{color:var(--accent)}
-.brand p{margin:4px 0 0;color:var(--muted)}
-.me{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.me .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
-.me .seg button{border:0;background:none;padding:5px 12px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13px}
-.me .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+/* Kopf */
+.hello{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hello h1{font-size:clamp(28px,7vw,36px);font-weight:800;letter-spacing:-.02em}
+.hello p{margin:4px 0 0;color:var(--muted)}
+.who{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;flex:none}
+.who button{border:0;background:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;color:var(--muted)}
+.who button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue)}
 
-/* Tabs */
-.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;margin-block:18px 20px;padding-block:8px;border-bottom:1px solid var(--line);overflow-x:auto}
-.tabs button{border:0;background:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--muted);white-space:nowrap}
-.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-.tabs .count{font-family:var(--mono);font-size:11px;background:var(--accent-soft);color:var(--accent);padding:1px 6px;border-radius:6px;margin-left:4px}
+/* Karten / Blöcke */
+.block{background:var(--surface);border-radius:22px;box-shadow:var(--shadow);padding:20px;display:grid;gap:20px;margin-top:20px}
+.q{display:grid;gap:10px}
+.q-title{font-weight:700;font-size:17px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tiles.three{grid-template-columns:repeat(3,1fr)}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,1fr)}.tiles.three{grid-template-columns:repeat(3,1fr)}}
+.tile{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:12px 10px;cursor:pointer;text-align:left;display:grid;gap:2px;min-height:64px;align-content:center}
+.tile b{font-weight:700;font-size:15px}
+.tile small{color:var(--muted);font-size:13px}
+.tile[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.tile[aria-pressed="true"] small{color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:15px}
+.chip[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
+.input{width:100%;background:var(--bg);border:2px solid transparent;border-radius:14px;padding:12px 14px}
+.input:focus{border-color:var(--blue);outline:none}
+textarea.input{min-height:84px;resize:vertical}
+details.more summary{cursor:pointer;color:var(--blue);font-weight:700;list-style:none;display:flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"+";font-size:20px;line-height:1}
+details.more[open] summary::after{content:"–"}
+details.more .q{margin-top:16px}
 
-/* Generator layout */
-.gen{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
-@media (max-width:760px){.gen{grid-template-columns:1fr}}
-.radar-box{display:grid;gap:10px;justify-items:center}
-.radar{width:100%;max-width:260px;aspect-ratio:1;cursor:pointer;touch-action:manipulation}
-.radar text{font-family:var(--mono);font-size:8px;fill:var(--muted)}
-.radar .home{fill:var(--accent)}
-.radar-cap{font-size:13px;color:var(--muted);text-align:center}
-.radar-cap b{color:var(--ink);font-family:var(--mono)}
+.btn{border:0;background:var(--soft);padding:12px 18px;border-radius:14px;cursor:pointer;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-size:15px}
+.btn.big{width:100%;padding:16px 20px;font-size:17px;border-radius:18px;background:var(--blue);color:var(--on-blue)}
+.btn.orange{background:var(--orange);color:#fff}
+.btn.line{background:none;border:2px solid var(--line)}
+.btn.small{padding:8px 12px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.55;cursor:default}
+.link{background:none;border:0;color:var(--blue);font-weight:700;cursor:pointer;padding:6px;display:inline-flex;gap:6px;align-items:center}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.small-text{font-size:14px}
 
-.filters{display:grid;gap:16px}
-.fgroup{display:grid;gap:6px}
-.flabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.chip.dist[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.input,select.input,textarea.input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
-textarea.input{min-height:70px;resize:vertical}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
-.btn{border:1px solid var(--line);background:var(--surface);padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.ghost{background:none}
-.btn.small{padding:6px 10px;font-size:13px;border-radius:9px}
-.btn:disabled{opacity:.5;cursor:default}
-.note{font-size:13px;color:var(--muted)}
-.status{font-size:14px;color:var(--muted);min-height:1.5em}
+/* Ergebnisse */
+.sec-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:32px;margin-bottom:14px;flex-wrap:wrap}
+.sec-head h2{font-size:22px}
+.cards{display:grid;gap:14px}
+.card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:grid;gap:10px}
+.card h3{font-size:19px}
+.where{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px}
+.where .ico{width:16px;height:16px}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.fact{font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.fact.warn{background:var(--orange-soft);color:var(--orange)}
+.fact.ok{background:var(--green-soft);color:var(--green)}
+.card p{margin:0}
+.tip{font-size:14px;color:var(--muted)}
+.card-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.card-actions .grow{flex:1}
+.save{background:var(--blue);color:var(--on-blue)}
+.save.done{background:var(--green-soft);color:var(--green)}
+.heart[aria-pressed="true"]{color:var(--orange)}
+.heart[aria-pressed="true"] .ico{fill:currentColor}
+.stars{display:flex;gap:2px;align-items:center}
+.stars span{font-size:14px;color:var(--muted);margin-right:6px}
+.stars button{border:0;background:none;cursor:pointer;font-size:24px;line-height:1;padding:2px;color:var(--line)}
+.stars button.on{color:var(--orange)}
+.by{font-size:13px;color:var(--muted)}
+.picked{outline:3px solid var(--orange);outline-offset:3px}
 
-/* Results */
-.results{margin-top:28px;display:grid;gap:14px}
-.res-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.res-head h2{font-size:22px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+/* Lade-Zustand */
+.loading{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:28px 20px;display:grid;gap:12px;justify-items:center;text-align:center}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--blue);display:block}
+@media (prefers-reduced-motion:no-preference){
+  .dots i{animation:bounce 1s infinite ease-in-out}
+  .dots i:nth-child(2){animation-delay:.15s;background:var(--orange)}
+  .dots i:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+}
+.msg{padding:12px 16px;border-radius:14px;background:var(--orange-soft);color:var(--ink);font-size:15px}
 
-/* Ticket card */
-.ticket{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-rows:auto 1fr auto}
-.t-body::before,.t-body::after{content:"";position:absolute;top:-10px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
-.t-body::before{left:-10px;clip-path:inset(0 0 0 50%)}
-.t-body::after{right:-10px;clip-path:inset(0 50% 0 0)}
-.t-head{padding:14px 16px 12px;border-bottom:1.5px dashed var(--line);min-height:74px;display:grid;gap:3px;align-content:start}
-.t-head h3{font-size:18px;font-weight:700}
-.t-where{font-size:13px;color:var(--muted)}
-.t-body{position:relative;padding:12px 16px;display:grid;gap:8px;align-content:start}
-.meta{display:flex;flex-wrap:wrap;gap:6px}
-.m{font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:6px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
-.m.km{color:var(--accent);border-color:var(--accent-soft);background:var(--accent-soft)}
-.m.check{color:var(--sun);border-color:var(--sun);background:none}
-.m.done{color:var(--moss);background:var(--moss-soft);border-color:var(--moss-soft)}
-.t-desc{margin:0}
-.t-tip{margin:0;font-size:13.5px;color:var(--muted)}
-.t-tip b{color:var(--ink);font-weight:600}
-.t-foot{padding:10px 12px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.t-foot .spacer{flex:1}
-.by{font-size:12px;color:var(--muted)}
-.stars{display:inline-flex;gap:2px}
-.stars button{border:0;background:none;cursor:pointer;font-size:18px;line-height:1;padding:2px;color:var(--ring)}
-.stars button.on{color:var(--sun)}
-.fav[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
-.picked{outline:3px solid var(--accent);outline-offset:3px}
-
-/* Collection */
-.coll-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
-details.add{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:18px}
-details.add summary{cursor:pointer;font-weight:700}
-.form{display:grid;gap:12px;margin-top:12px}
-.form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:560px){.form .two{grid-template-columns:1fr}}
-label.f{display:grid;gap:5px;font-size:13px;font-weight:600}
-.empty{padding:28px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:14px}
+/* Merkliste */
+.seg{display:flex;background:var(--surface);border-radius:16px;padding:4px;box-shadow:var(--shadow);margin-top:20px}
+.seg button{flex:1;border:0;background:none;padding:10px 6px;border-radius:12px;cursor:pointer;font-weight:700;color:var(--muted);font-size:15px}
+.seg button[aria-pressed="true"]{background:var(--blue-soft);color:var(--ink)}
+.empty{padding:36px 20px;text-align:center;color:var(--muted);background:var(--surface);border-radius:20px;display:grid;gap:12px;justify-items:center}
+.empty .ico{width:36px;height:36px;color:var(--blue)}
 
 /* Events */
-.ev-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px}
-.panel h2{font-size:20px}
+.linklist{display:grid;gap:8px}
+.linkrow{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--bg);text-decoration:none;font-weight:600}
+.linkrow .ico{color:var(--blue)}
+.linkrow .arrow{margin-left:auto;color:var(--muted)}
+.hscroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.hscroll .chip{flex:none}
 
-/* Profile */
-.people{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:640px){.people{grid-template-columns:1fr}}
-.person{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px}
-.person h3{font-size:17px}
-.banner{padding:10px 14px;border-radius:12px;background:var(--moss-soft);color:var(--moss);font-size:14px;margin-bottom:16px}
-.banner.warn{background:var(--accent-soft);color:var(--accent)}
+/* Formular */
+.field{display:grid;gap:6px}
+.field span{font-weight:700;font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
 
-@media (prefers-reduced-motion:no-preference){
-  .ticket{animation:pop .28s ease both}
-  @keyframes pop{from{transform:translateY(6px)}to{transform:none}}
-}
+/* Sheet für eigene Idee */
+.sheet-bg{position:fixed;inset:0;background:rgba(10,14,30,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;max-height:92vh;overflow:auto}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.sheet-head h2{font-size:22px}
+.x{border:0;background:var(--soft);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;line-height:1}
+
+/* Navigation unten */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h)}
+.nav button{border:0;background:none;cursor:pointer;display:grid;justify-items:center;align-content:center;gap:3px;color:var(--muted);font-size:12px;font-weight:700;position:relative}
+.nav button .ico{width:24px;height:24px}
+.nav button[aria-selected="true"]{color:var(--blue)}
+.nav .badge{position:absolute;top:8px;left:calc(50% + 8px);background:var(--orange);color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 5px}
+.fab{position:fixed;right:max(16px,calc(50% - 344px));bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0px));z-index:9;border:0;background:var(--orange);color:#fff;border-radius:999px;padding:14px 18px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;display:flex;gap:6px;align-items:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;z-index:30;font-size:15px;max-width:calc(100% - 32px);text-align:center}
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16v5M16.5 18.5h5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 17v2M13 11v2"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M4 9v11h16V9M3 9h18M9 20v-6h6v6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+</svg>
+
 <div class="wrap">
-  <header class="top">
-    <div class="brand">
-      <h1>Date<span>·</span>Radar</h1>
-      <p id="today">Ab Schwerte, für euch zwei.</p>
+  <header class="hello">
+    <div>
+      <h1 id="hi">Hallo!</h1>
+      <p id="today"></p>
     </div>
-    <div class="me" id="meBox">
-      <span>Ich bin</span>
-      <div class="seg" id="meSeg"></div>
-    </div>
+    <div class="who" id="who" role="group" aria-label="Wer benutzt die App gerade?"></div>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Bereiche">
-    <button role="tab" id="tab-gen" aria-selected="true" data-tab="gen">Ideen finden</button>
-    <button role="tab" id="tab-coll" aria-selected="false" data-tab="coll">Unsere Sammlung <span class="count" id="collCount">0</span></button>
-    <button role="tab" id="tab-ev" aria-selected="false" data-tab="ev">Veranstaltungen</button>
-    <button role="tab" id="tab-prof" aria-selected="false" data-tab="prof">Über uns</button>
-  </nav>
-
-  <div id="modeBanner" hidden></div>
-
-  <!-- ============ GENERATOR ============ -->
-  <section id="view-gen" role="tabpanel" aria-labelledby="tab-gen">
-    <div class="gen">
-      <div class="radar-box">
-        <svg class="radar" id="radar" viewBox="-130 -130 260 260" role="img" aria-label="Entfernung ab Schwerte wählen"></svg>
-        <div class="radar-cap">Radius ab Schwerte: <b id="radarCap">bis 25 km</b><br>Tippe auf einen Ring.</div>
+  <!-- ============ ENTDECKEN ============ -->
+  <section id="view-gen">
+    <div class="block">
+      <div class="q">
+        <div class="q-title">Wie weit wollt ihr fahren?</div>
+        <div class="tiles" id="f-dist"></div>
       </div>
-
-      <div class="filters">
-        <div class="fgroup">
-          <span class="flabel">Wie weit?</span>
-          <div class="chips" id="f-dist"></div>
-        </div>
-        <div class="fgroup">
-          <span class="flabel">Budget für euch beide</span>
-          <div class="chips" id="f-budget"></div>
-        </div>
-        <div class="fgroup">
-          <span class="flabel">Wie viel Zeit?</span>
+      <div class="q">
+        <div class="q-title">Wie viel darf es kosten?</div>
+        <div class="tiles" id="f-budget"></div>
+      </div>
+      <div class="q">
+        <div class="q-title">Worauf habt ihr Lust?</div>
+        <div class="chips" id="f-mood"></div>
+      </div>
+      <details class="more" id="moreBox">
+        <summary>Mehr Wünsche</summary>
+        <div class="q">
+          <div class="q-title">Wie viel Zeit habt ihr?</div>
           <div class="chips" id="f-dur"></div>
         </div>
-        <div class="fgroup">
-          <span class="flabel">Worauf habt ihr Lust? (mehrere möglich)</span>
-          <div class="chips" id="f-mood"></div>
-        </div>
-        <div class="fgroup">
-          <span class="flabel">Drinnen oder draußen?</span>
+        <div class="q">
+          <div class="q-title">Drinnen oder draußen?</div>
           <div class="chips" id="f-io"></div>
         </div>
-        <div class="row">
-          <label class="f" style="flex:1;min-width:150px">Wann?
-            <select class="input" id="f-when">
-              <option>Heute</option><option>Morgen</option><option selected>Dieses Wochenende</option><option>Nächste Woche</option><option>Irgendwann</option>
-            </select>
-          </label>
-          <label class="f" style="flex:2;min-width:200px">Sonst noch was?
-            <input class="input" id="f-extra" placeholder="z. B. es soll regnen, wir haben Hunger, was Neues">
-          </label>
+        <div class="q">
+          <div class="q-title">Wann?</div>
+          <div class="chips" id="f-when"></div>
         </div>
-        <div class="actions">
-          <button class="btn primary" id="btnAi">✦ Ideen generieren</button>
-          <button class="btn" id="btnPool">Aus dem Pool würfeln</button>
-          <button class="btn ghost" id="btnStop" hidden>Stopp</button>
+        <div class="q">
+          <label class="q-title" for="f-extra">Noch was Besonderes?</label>
+          <input class="input" id="f-extra" placeholder="z. B. es regnet, wir haben Hunger, etwas Neues">
         </div>
-        <div class="status" id="genStatus" aria-live="polite"></div>
+      </details>
+      <div>
+        <button class="btn big" id="btnFind"><svg class="ico"><use href="#i-spark"/></svg>Ideen finden</button>
+        <div class="center" style="margin-top:8px"><button class="link" id="btnPool"><svg class="ico"><use href="#i-dice"/></svg>Schnell würfeln</button></div>
       </div>
     </div>
 
-    <div class="results" id="genResults"></div>
+    <div id="genOut"></div>
   </section>
 
-  <!-- ============ SAMMLUNG ============ -->
-  <section id="view-coll" role="tabpanel" aria-labelledby="tab-coll" hidden>
-    <div class="coll-top">
-      <div class="chips" id="collFilter"></div>
-      <button class="btn primary" id="btnSurprise">Überrasch uns</button>
-    </div>
-    <details class="add" id="addBox">
-      <summary>+ Eigene Idee eintragen</summary>
-      <form class="form" id="addForm">
-        <label class="f">Was?<input class="input" id="a-title" required placeholder="z. B. Sonnenuntergang an der Hohensyburg"></label>
-        <div class="two">
-          <label class="f">Ort / Location<input class="input" id="a-place" placeholder="z. B. Kaiser-Wilhelm-Denkmal"></label>
-          <label class="f">Stadt<input class="input" id="a-city" placeholder="Dortmund"></label>
-        </div>
-        <div class="two">
-          <label class="f">Budget
-            <select class="input" id="a-budget"><option value="0">Gratis</option><option value="1" selected>bis 20 €</option><option value="2">bis 50 €</option><option value="3">mehr als 50 €</option></select>
-          </label>
-          <label class="f">Entfernung ab Schwerte (km)<input class="input" id="a-km" type="number" min="0" max="999" inputmode="numeric" placeholder="10"></label>
-        </div>
-        <label class="f">Notiz<textarea class="input" id="a-desc" placeholder="Warum wir das machen wollen, Link, Öffnungszeiten…"></textarea></label>
-        <div><button class="btn primary" type="submit">Zur Sammlung</button></div>
-      </form>
-    </details>
-    <div class="grid" id="collList"></div>
+  <!-- ============ MERKLISTE ============ -->
+  <section id="view-coll" hidden>
+    <h2 style="font-size:26px;margin-top:24px">Eure Merkliste</h2>
+    <div class="seg" id="collSeg" role="group" aria-label="Filter"></div>
+    <div style="margin-top:14px"><button class="btn big" id="btnSurprise" style="background:var(--orange);color:#fff"><svg class="ico"><use href="#i-dice"/></svg>Zufalls-Date ziehen</button></div>
+    <div class="cards" id="collList" style="margin-top:16px"></div>
   </section>
 
   <!-- ============ EVENTS ============ -->
-  <section id="view-ev" role="tabpanel" aria-labelledby="tab-ev" hidden>
-    <div class="panel">
-      <h2>Was läuft gerade?</h2>
-      <div class="row">
-        <label class="f" style="flex:1;min-width:160px">Stadt / Region
-          <select class="input" id="ev-city"></select>
-        </label>
-        <label class="f" style="flex:1;min-width:160px">Zeitraum
-          <select class="input" id="ev-when">
-            <option>heute</option><option selected>dieses Wochenende</option><option>nächste Woche</option><option>diesen Monat</option>
-          </select>
-        </label>
+  <section id="view-ev" hidden>
+    <h2 style="font-size:26px;margin-top:24px">Was ist los?</h2>
+    <div class="block">
+      <div class="q">
+        <div class="q-title">Wo?</div>
+        <div class="hscroll" id="evCity"></div>
       </div>
-      <p class="note" style="margin:0">Aktuelle Termine kommen direkt aus der Suche. Die Links öffnen in einem neuen Tab.</p>
-      <div class="ev-links" id="evLinks"></div>
-    </div>
-    <div class="results">
-      <div class="res-head">
-        <h2>Wiederkehrende Highlights</h2>
-        <button class="btn" id="btnEvAi">✦ Was ist um diese Jahreszeit los?</button>
+      <div class="q">
+        <div class="q-title">Wann?</div>
+        <div class="chips" id="evWhen"></div>
       </div>
-      <p class="note" style="margin:0">Claude kennt feste Formate wie Kirmes, Märkte oder Festivals, aber keine tagesaktuellen Termine. Deshalb steht bei solchen Ideen „Termin prüfen“.</p>
-      <div class="status" id="evStatus" aria-live="polite"></div>
-      <div class="grid" id="evResults"></div>
+      <div class="linklist" id="evLinks"></div>
     </div>
+    <div class="sec-head"><h2>Typisch für diese Jahreszeit</h2></div>
+    <button class="btn big" id="btnEv" style="margin-bottom:14px"><svg class="ico"><use href="#i-spark"/></svg>Highlights zeigen</button>
+    <div id="evOut"></div>
   </section>
 
-  <!-- ============ PROFIL ============ -->
-  <section id="view-prof" role="tabpanel" aria-labelledby="tab-prof" hidden>
-    <p class="note" style="margin-top:0">Alles hier fließt in die Ideen ein. Je genauer, desto besser passen die Vorschläge.</p>
-    <form id="profForm" class="form">
-      <div class="people">
-        <div class="person">
-          <h3>Person 1</h3>
-          <label class="f">Name<input class="input" id="p-n1"></label>
-          <label class="f">Mag / Interessen<textarea class="input" id="p-i1" placeholder="z. B. Technik, gutes Essen, Autos, Fußball"></textarea></label>
-        </div>
-        <div class="person">
-          <h3>Person 2</h3>
-          <label class="f">Name<input class="input" id="p-n2"></label>
-          <label class="f">Mag / Interessen<textarea class="input" id="p-i2" placeholder="z. B. Natur, Fotos, Tiere, Shopping"></textarea></label>
-        </div>
-      </div>
-      <label class="f">Was wir zusammen lieben<textarea class="input" id="p-both" placeholder="z. B. Sonnenuntergänge, Sushi, Serienabende"></textarea></label>
-      <label class="f">No-Gos<textarea class="input" id="p-no" placeholder="z. B. Höhenangst, keine Menschenmassen, kein Fisch"></textarea></label>
+  <!-- ============ WIR ============ -->
+  <section id="view-prof" hidden>
+    <h2 style="font-size:26px;margin-top:24px">Über euch</h2>
+    <p class="muted" style="margin:6px 0 0">Je mehr ihr hier erzählt, desto besser passen die Ideen.</p>
+    <form id="profForm" class="block">
       <div class="two">
-        <label class="f">Essen<input class="input" id="p-food" placeholder="z. B. eine(r) vegetarisch"></label>
-        <label class="f">Unterwegs mit
-          <select class="input" id="p-mob"><option>Auto</option><option>Bahn (Deutschlandticket)</option><option selected>Auto oder Bahn</option></select>
+        <label class="field"><span>Dein Name</span><input class="input" id="p-n1"></label>
+        <label class="field"><span>Ihr Name</span><input class="input" id="p-n2"></label>
+      </div>
+      <label class="field"><span id="l-i1">Das mag Person 1</span><textarea class="input" id="p-i1" placeholder="Hobbys, Musik, Essen, was glücklich macht"></textarea></label>
+      <label class="field"><span id="l-i2">Das mag Person 2</span><textarea class="input" id="p-i2" placeholder="Hobbys, Musik, Essen, was glücklich macht"></textarea></label>
+      <label class="field"><span>Das lieben wir beide</span><textarea class="input" id="p-both" placeholder="z. B. Sonnenuntergänge, Pasta, laute Musik"></textarea></label>
+      <label class="field"><span>Das mögen wir gar nicht</span><textarea class="input" id="p-no" placeholder="z. B. Höhenangst, zu viele Menschen"></textarea></label>
+      <div class="two">
+        <label class="field"><span>Essen</span><input class="input" id="p-food" placeholder="z. B. am liebsten Nudeln"></label>
+        <label class="field"><span>Wir fahren mit</span>
+          <select class="input" id="p-mob"><option>Auto</option><option>Bahn (Deutschlandticket)</option><option>Auto oder Bahn</option></select>
         </label>
       </div>
-      <div class="row"><button class="btn primary" type="submit">Speichern</button><span class="status" id="profStatus" aria-live="polite"></span></div>
+      <button class="btn big" type="submit">Speichern</button>
     </form>
   </section>
 </div>
+
+<button class="fab" id="fab" hidden><svg class="ico"><use href="#i-plus"/></svg>Eigene Idee</button>
+
+<nav class="nav" aria-label="Bereiche">
+  <div class="nav-in" role="tablist">
+    <button role="tab" data-tab="gen" aria-selected="true"><svg class="ico"><use href="#i-compass"/></svg>Entdecken</button>
+    <button role="tab" data-tab="coll" aria-selected="false"><svg class="ico"><use href="#i-heart"/></svg>Merkliste<span class="badge" id="badge" hidden></span></button>
+    <button role="tab" data-tab="ev" aria-selected="false"><svg class="ico"><use href="#i-cal"/></svg>Events</button>
+    <button role="tab" data-tab="prof" aria-selected="false"><svg class="ico"><use href="#i-users"/></svg>Wir</button>
+  </div>
+</nav>
+
+<div class="sheet-bg" id="sheet" hidden>
+  <form class="sheet" id="addForm" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head"><h2 id="sheetTitle">Eigene Idee</h2><button type="button" class="x" id="sheetClose" aria-label="Schließen">×</button></div>
+    <label class="field"><span>Was wollt ihr machen?</span><input class="input" id="a-title" required placeholder="z. B. Sonnenuntergang an der Hohensyburg"></label>
+    <label class="field"><span>Wo? (optional)</span><input class="input" id="a-where" placeholder="z. B. Dortmund"></label>
+    <div class="q"><div class="q-title" style="font-size:15px">Kosten</div><div class="chips" id="a-budget"></div></div>
+    <label class="field"><span>Notiz (optional)</span><textarea class="input" id="a-desc" placeholder="Link, Öffnungszeiten, warum ihr das machen wollt"></textarea></label>
+    <button class="btn big" type="submit">Auf die Merkliste</button>
+  </form>
+</div>
+
+<div class="toast" id="toast" hidden role="status"></div>
 
 <script>
 (() => {
 "use strict";
 
-/* ---------- Kuratierter Ideen-Pool rund um Schwerte (km ≈ Luftlinie/Fahrweg ab Schwerte) ---------- */
-// b: 0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr; d: h (paar Std.), abend, tag; io: drinnen/draußen/beides; mo: Monate (1-12), leer = ganzjährig
 const POOL = [
   {t:"Picknick an den Ruhrwiesen",p:"Ruhrwiesen / Ruhrtalradweg",c:"Schwerte",km:1,b:0,d:"h",io:"draußen",m:["entspannt","romantisch"],mo:[4,5,6,7,8,9],desc:"Decke, Snacks vom Markt, Blick auf die Ruhr. Klingt simpel, wirkt immer.",tip:"Beim Wochenmarkt in der Altstadt vorher einkaufen."},
   {t:"Radtour Schwerte → Hengsteysee",p:"Ruhrtalradweg",c:"Schwerte / Hagen",km:7,b:0,d:"h",io:"draußen",m:["aktiv","entspannt"],mo:[4,5,6,7,8,9,10],desc:"Flach an der Ruhr entlang bis zum See, dort Pause mit Seeblick.",tip:"Rund 20 km hin und zurück. Am Seeufer gibt es Kioske."},
@@ -350,437 +357,412 @@ const POOL = [
 ];
 
 const DIST = [
-  {k:1,label:"Schwerte",max:5,r:30},
-  {k:2,label:"Umgebung",max:25,r:58},
-  {k:3,label:"Ruhrgebiet",max:75,r:90},
-  {k:4,label:"Tagesausflug",max:150,r:122},
+  {k:1,label:"Hier in Schwerte",sub:"zu Fuß oder kurz",max:5},
+  {k:2,label:"In der Nähe",sub:"bis ca. 25 km",max:25},
+  {k:3,label:"Ruhrgebiet",sub:"bis ca. 75 km",max:75},
+  {k:4,label:"Tagesausflug",sub:"bis ca. 150 km",max:150},
 ];
-const BUDGET = [{v:0,label:"Gratis"},{v:1,label:"bis 20 €"},{v:2,label:"bis 50 €"},{v:3,label:"Egal"}];
+const BUDGET = [{v:0,label:"Gratis",sub:"0 €"},{v:1,label:"Kleines Geld",sub:"bis 20 €"},{v:2,label:"Normal",sub:"bis 50 €"},{v:3,label:"Egal",sub:"darf mehr sein"}];
 const BUDGET_TXT = ["gratis","bis 20 €","bis 50 €","mehr als 50 €"];
-const BUDGET_SIGN = ["0 €","€","€€","€€€"];
-const DUR = [{v:"h",label:"Ein paar Stunden"},{v:"abend",label:"Ein Abend"},{v:"tag",label:"Ganzer Tag"},{v:"we",label:"Wochenende mit Übernachtung"}];
-const MOODS = ["romantisch","entspannt","aktiv","kultur","kulinarisch","abenteuer","party"];
+const BUDGET_FACT = ["Gratis","Günstig","Mittel","Etwas teurer"];
+const DUR = [{v:"h",label:"Ein paar Stunden"},{v:"abend",label:"Ein Abend"},{v:"tag",label:"Ganzer Tag"},{v:"we",label:"Ganzes Wochenende"}];
+const MOODS = [
+  {v:"romantisch",label:"Romantisch"},{v:"party",label:"Feiern & Musik"},{v:"entspannt",label:"Entspannt"},
+  {v:"aktiv",label:"Aktiv"},{v:"kulinarisch",label:"Lecker essen"},{v:"kultur",label:"Kultur"},{v:"abenteuer",label:"Abenteuer"},
+];
 const IO = [{v:"egal",label:"Egal"},{v:"drinnen",label:"Drinnen"},{v:"draußen",label:"Draußen"}];
+const WHEN = ["Heute","Morgen","Am Wochenende","Irgendwann"];
 const CITIES = [
   ["Schwerte","schwerte.de"],["Dortmund","dortmund.de"],["Hagen","hagen.de"],["Unna","unna.de"],
   ["Iserlohn","iserlohn.de"],["Witten","witten.de"],["Bochum","bochum.de"],["Essen","essen.de"],
   ["Münster","muenster.de"],["Sauerland","sauerland.com"],
 ];
+const EV_WHEN = ["heute","dieses Wochenende","nächste Woche","diesen Monat"];
 const DEFAULT_COUPLE = {n1:"Cosmin",i1:"",n2:"Sie",i2:"",both:"",no:"",food:"",mob:"Auto oder Bahn"};
 
-/* ---------- State ---------- */
+/* ---------- Zustand ---------- */
 const LS = "dateradar:v1:";
 const lsGet = (k, d) => { try { const v = localStorage.getItem(LS + k); return v ? JSON.parse(v) : d; } catch { return d; } };
 const lsSet = (k, v) => { try { localStorage.setItem(LS + k, JSON.stringify(v)); } catch {} };
 
 const S = {
-  tab: "gen",
-  f: Object.assign({dist:2,budget:2,dur:"abend",moods:[],io:"egal"}, lsGet("filters", {})),
-  ideas: [],
-  couple: {...DEFAULT_COUPLE},
-  me: lsGet("me", 1),
-  collFilter: "offen",
-  results: [], resultsTitle: "", resultsKind: "",
-  evResults: [],
-  pickedId: null,
-  confirmDel: null,
+  f: Object.assign({dist:2, budget:2, dur:"abend", moods:[], io:"egal", when:"Am Wochenende"}, lsGet("filters", {})),
+  ideas: [], couple: {...DEFAULT_COUPLE}, me: lsGet("me", 1),
+  collFilter: "offen", results: [], resultsTitle: "", resultsKind: "", genState: "idle", genMsg: "",
+  evResults: [], evState: "idle", evMsg: "", evCity: "Dortmund", evWhen: "dieses Wochenende",
+  pickedId: null, confirmDel: null, addBudget: 1,
 };
-let db = null, sample = null, mode = "loading";
+if (!DIST.some(d => d.k === S.f.dist)) S.f.dist = 2;
+if (!WHEN.includes(S.f.when)) S.f.when = "Am Wochenende";
+let db = null, sample = null, local = false;
 
-/* ---------- Helpers ---------- */
+/* ---------- Helfer ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const hash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
-const mapsUrl = i => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([i.place, i.city].filter(Boolean).join(", "));
+const icon = (id, extra = "") => `<svg class="ico" ${extra}><use href="#i-${id}"/></svg>`;
+const mapsUrl = i => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([i.place, i.city].filter(Boolean).join(", ") || i.title);
 const searchUrl = q => "https://www.google.com/search?q=" + encodeURIComponent(q);
-const now = new Date();
-const month = now.getMonth() + 1;
+const now = new Date(), month = now.getMonth() + 1;
 const todayTxt = now.toLocaleDateString("de-DE", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
 const names = () => [S.couple.n1 || "Person 1", S.couple.n2 || "Person 2"];
 const myName = () => names()[S.me === 2 ? 1 : 0];
-const normTitle = t => String(t || "").toLowerCase().replace(/\s+/g, " ").trim();
-const isSaved = t => S.ideas.some(i => normTitle(i.title) === normTitle(t));
+const norm = t => String(t || "").toLowerCase().replace(/\s+/g, " ").trim();
+const isSaved = t => S.ideas.some(i => norm(i.title) === norm(t));
+const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
+let toastT;
+function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 2600); }
 
 function poolToIdea(p) {
-  return {title:p.t, place:p.p, city:p.c, km:p.km, budget:p.b, duration:{h:"2–4 Std.",abend:"ein Abend",tag:"ganzer Tag"}[p.d],
+  return {title:p.t, place:p.p, city:p.c, km:p.km, budget:p.b, duration:{h:"ein paar Stunden",abend:"ein Abend",tag:"ganzer Tag"}[p.d],
     moods:p.m, io:p.io, desc:p.desc, tip:p.tip, checkDate:!!p.check, source:"pool"};
 }
 
-/* ---------- Store (db, sonst lokal im Browser) ---------- */
+/* ---------- Speicher (gemeinsam, sonst auf diesem Gerät) ---------- */
 const store = {
   async add(idea) {
     const doc = {...idea, status:"offen", fav:false, rating:0, addedBy:myName(), createdAt:Date.now()};
     if (db) { await db.collection("ideas").add(doc); return; }
     S.ideas.push({id:"l" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), ...doc});
-    lsSet("ideas", S.ideas); renderAll();
+    lsSet("ideas", S.ideas); renderLists();
   },
   async update(id, patch) {
     if (db) { await db.doc("ideas/" + id).update(patch); return; }
     const i = S.ideas.find(x => x.id === id); if (i) Object.assign(i, patch);
-    lsSet("ideas", S.ideas); renderAll();
+    lsSet("ideas", S.ideas); renderLists();
   },
   async remove(id) {
     if (db) { await db.doc("ideas/" + id).delete(); return; }
-    S.ideas = S.ideas.filter(x => x.id !== id); lsSet("ideas", S.ideas); renderAll();
+    S.ideas = S.ideas.filter(x => x.id !== id); lsSet("ideas", S.ideas); renderLists();
   },
   async saveCouple(c) {
     if (db) { await db.doc("settings/couple").set(c); return; }
-    S.couple = c; lsSet("couple", c); renderAll();
+    lsSet("couple", c);
   },
 };
+const errText = e => e && e.code === "invalid_argument" ? "Du darfst hier nur lesen, nicht speichern."
+  : e && e.code === "quota_exceeded" ? "Die Merkliste ist voll. Löscht ein paar alte Ideen." : "Das hat nicht geklappt. Versuch es nochmal.";
 
-/* ---------- Radar ---------- */
-function kmToR(km) {
-  let prev = {max:0, r:6};
-  for (const d of DIST) { if (km <= d.max) return prev.r + (d.r - prev.r) * ((km - prev.max) / (d.max - prev.max)); prev = d; }
-  return 124;
+/* ---------- Auswahl-Elemente ---------- */
+function tiles(el, items, isOn, onPick) {
+  el.innerHTML = items.map((it, i) => `<button type="button" class="tile" data-i="${i}" aria-pressed="${isOn(it)}"><b>${esc(it.label)}</b>${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("[data-i]"); if (b) onPick(items[+b.dataset.i]); };
 }
-function renderRadar() {
-  const sel = DIST.find(d => d.k === S.f.dist);
-  let s = "";
-  for (const d of [...DIST].reverse()) {
-    const on = d.k <= S.f.dist;
-    s += `<circle r="${d.r}" fill="${on ? "var(--accent-soft)" : "none"}" fill-opacity="${on ? (d.k === S.f.dist ? .55 : .35) : 0}" stroke="${d.k === S.f.dist ? "var(--accent)" : "var(--ring)"}" stroke-width="${d.k === S.f.dist ? 1.6 : 1}" stroke-dasharray="${d.k === S.f.dist ? "" : "2 3"}"/>`;
-  }
-  const places = [...POOL.map(p => ({t:p.t, km:p.km})), ...S.ideas.filter(i => typeof i.km === "number").map(i => ({t:i.title, km:i.km, saved:true}))];
-  for (const p of places) {
-    const a = (hash(p.t) % 360) * Math.PI / 180, r = Math.max(8, kmToR(p.km));
-    const inside = p.km <= sel.max;
-    s += `<circle cx="${(Math.cos(a) * r).toFixed(1)}" cy="${(Math.sin(a) * r).toFixed(1)}" r="${p.saved ? 3.2 : 2.3}" fill="${inside ? (p.saved ? "var(--moss)" : "var(--accent)") : "var(--ring)"}"><title>${esc(p.t)} · ≈${p.km} km</title></circle>`;
-  }
-  for (const d of DIST) s += `<text x="4" y="${-d.r + 10}">${d.max} km</text>`;
-  s += `<circle class="home" r="4.5"/><text x="7" y="3" style="fill:var(--ink);font-weight:700">Schwerte</text>`;
-  $("#radar").innerHTML = s;
-  $("#radarCap").textContent = `${sel.label} · bis ${sel.max} km`;
+function chips(el, items, isOn, onPick) {
+  el.innerHTML = items.map((it, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="${isOn(it)}">${esc(it.label)}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("[data-i]"); if (b) onPick(items[+b.dataset.i]); };
 }
-$("#radar").addEventListener("click", e => {
-  const svg = e.currentTarget, pt = svg.createSVGPoint();
-  pt.x = e.clientX; pt.y = e.clientY;
-  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
-  const dist = Math.hypot(p.x, p.y);
-  const d = DIST.find(x => dist <= x.r + 4) || DIST[DIST.length - 1];
-  setF("dist", d.k);
-});
-
-/* ---------- Filters ---------- */
-function chipRow(el, items, isOn, onClick, cls = "") {
-  el.innerHTML = items.map((it, i) => `<button type="button" class="chip ${cls}" data-i="${i}" aria-pressed="${isOn(it)}">${esc(it.label)}</button>`).join("");
-  el.onclick = e => { const b = e.target.closest("button[data-i]"); if (b) onClick(items[+b.dataset.i]); };
-}
-function setF(k, v) { S.f[k] = v; lsSet("filters", S.f); renderFilters(); renderRadar(); }
+function setF(k, v) { S.f[k] = v; lsSet("filters", S.f); renderFilters(); }
 function renderFilters() {
-  chipRow($("#f-dist"), DIST.map(d => ({...d, label:`${d.label} (${d.max} km)`})), d => d.k === S.f.dist, d => setF("dist", d.k), "dist");
-  chipRow($("#f-budget"), BUDGET, b => b.v === S.f.budget, b => setF("budget", b.v));
-  chipRow($("#f-dur"), DUR, d => d.v === S.f.dur, d => setF("dur", d.v));
-  chipRow($("#f-mood"), MOODS.map(m => ({v:m, label:m[0].toUpperCase() + m.slice(1)})), m => S.f.moods.includes(m.v),
-    m => setF("moods", S.f.moods.includes(m.v) ? S.f.moods.filter(x => x !== m.v) : [...S.f.moods, m.v]));
-  chipRow($("#f-io"), IO, o => o.v === S.f.io, o => setF("io", o.v));
+  tiles($("#f-dist"), DIST, d => d.k === S.f.dist, d => setF("dist", d.k));
+  tiles($("#f-budget"), BUDGET, b => b.v === S.f.budget, b => setF("budget", b.v));
+  chips($("#f-mood"), MOODS, m => S.f.moods.includes(m.v), m => setF("moods", S.f.moods.includes(m.v) ? S.f.moods.filter(x => x !== m.v) : [...S.f.moods, m.v]));
+  chips($("#f-dur"), DUR, d => d.v === S.f.dur, d => setF("dur", d.v));
+  chips($("#f-io"), IO, o => o.v === S.f.io, o => setF("io", o.v));
+  chips($("#f-when"), WHEN.map(w => ({v:w, label:w})), w => w.v === S.f.when, w => setF("when", w.v));
 }
 
 /* ---------- Pool ---------- */
 function poolMatches(strict) {
   const maxKm = DIST.find(d => d.k === S.f.dist).max, f = S.f;
-  const durOk = d => f.dur === "h" ? d === "h" || d === "abend" : f.dur === "abend" ? d !== "tag" : true;
+  const durOk = d => f.dur === "h" ? d !== "tag" : f.dur === "abend" ? d !== "tag" : true;
   return POOL.filter(p =>
-    p.km <= maxKm && p.b <= f.budget &&
-    (!p.mo.length || p.mo.includes(month)) &&
+    p.km <= maxKm && p.b <= f.budget && (!p.mo.length || p.mo.includes(month)) &&
     (f.io === "egal" || p.io === "beides" || p.io === f.io) &&
-    (!strict || durOk(p.d)) &&
-    (!strict || !f.moods.length || p.m.some(m => f.moods.includes(m)))
-  );
+    (!strict || durOk(p.d)) && (!strict || !f.moods.length || p.m.some(m => f.moods.includes(m))));
 }
-function rollPool() {
+function rollPool(note) {
   let list = poolMatches(true), loose = false;
   if (list.length < 3) { list = poolMatches(false); loose = true; }
-  const picks = list.sort(() => Math.random() - .5).slice(0, 3).map(poolToIdea);
-  S.results = picks; S.resultsKind = "pool";
-  S.resultsTitle = picks.length ? (loose ? "Nichts passt ganz genau. Das kommt am nächsten ran:" : "Aus dem Pool gewürfelt") : "";
-  $("#genStatus").textContent = picks.length ? "" : "Mit diesen Filtern gibt es nichts im Pool. Mehr Radius oder Budget probieren.";
-  renderResults();
+  S.results = shuffle(list).slice(0, 3).map(poolToIdea);
+  S.resultsKind = "pool"; S.genState = "done";
+  S.resultsTitle = loose ? "Das kommt am nächsten ran" : "Eure Vorschläge";
+  S.genMsg = note || (S.results.length ? "" : "Dafür haben wir gerade nichts. Wählt einen größeren Umkreis oder mehr Budget.");
+  renderGen();
 }
 
-/* ---------- Claude ---------- */
+/* ---------- Ideen von Claude ---------- */
 function coupleText() {
   const c = S.couple, [a, b] = names();
-  return [
-    `${a}: ${c.i1 || "keine Angaben"}`,
-    `${b}: ${c.i2 || "keine Angaben"}`,
-    c.both && `Gemeinsam mögen sie: ${c.both}`,
-    c.no && `No-Gos: ${c.no}`,
-    c.food && `Essen: ${c.food}`,
-    `Unterwegs mit: ${c.mob || "Auto oder Bahn"}`,
-  ].filter(Boolean).join("\n");
+  return [`${a}: ${c.i1 || "keine Angaben"}`, `${b}: ${c.i2 || "keine Angaben"}`,
+    c.both && `Gemeinsam mögen sie: ${c.both}`, c.no && `No-Gos: ${c.no}`, c.food && `Essen: ${c.food}`,
+    `Unterwegs mit: ${c.mob || "Auto oder Bahn"}`].filter(Boolean).join("\n");
 }
-const IDEA_SHAPE = `{"title": "kurzer Titel", "place": "echter Name des Ortes/der Location", "city": "Stadt", "km": ca. Entfernung ab Schwerte als Zahl, "budget": 0|1|2|3 (0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr, für beide zusammen), "cost": "z. B. ca. 30 € zu zweit", "duration": "z. B. 2–3 Std.", "moods": ["romantisch"|"entspannt"|"aktiv"|"kultur"|"kulinarisch"|"abenteuer"|"party"], "io": "drinnen"|"draußen"|"beides", "desc": "2 Sätze, warum es zu genau diesem Paar passt", "tip": "ein konkreter Tipp (Anreise, beste Uhrzeit, reservieren)", "checkDate": true wenn es eine Veranstaltung mit Termin ist}`;
+const IDEA_SHAPE = `{"title": "kurzer, einladender Titel", "place": "echter Name des Ortes/der Location", "city": "Stadt", "km": ca. Entfernung ab Schwerte als Zahl, "budget": 0|1|2|3 (0 gratis, 1 bis 20 €, 2 bis 50 €, 3 mehr, für beide zusammen), "cost": "z. B. ca. 30 € zu zweit", "duration": "z. B. 2–3 Std.", "moods": ["romantisch"|"entspannt"|"aktiv"|"kultur"|"kulinarisch"|"abenteuer"|"party"], "io": "drinnen"|"draußen"|"beides", "desc": "2 kurze Sätze, warum es zu genau diesem Paar passt", "tip": "ein konkreter Tipp (Anreise, beste Uhrzeit, reservieren)", "checkDate": true wenn es eine Veranstaltung mit Termin ist}`;
 
 let ctl = null;
-function busy(on, statusEl, text) {
-  $("#btnAi").disabled = on; $("#btnEvAi").disabled = on; $("#btnStop").hidden = !on;
-  statusEl.textContent = text || "";
-}
-function sampleErr(e) {
+function friendlyErr(e) {
   const c = e && e.code;
-  if (c === "cancelled") return "Abgebrochen.";
-  if (c === "not_granted" || c === "sampling_disabled" || c === "not_declared" || c === "capability_disabled" || c === "capability_removed") {
-    sample = null; applyMode(); return "Claude ist hier nicht freigegeben. Der Pool funktioniert trotzdem.";
-  }
-  if (c === "rate_limited") return "Gerade zu viele Anfragen. Kurz warten und nochmal probieren.";
-  if (c === "session_expired") return "Bitte neu bei Claude anmelden.";
-  if (c === "invalid_json") return "Die Antwort war unvollständig. Einfach nochmal generieren.";
-  if (c === "refused") return "Dazu kam keine Antwort. Den Zusatztext anders formulieren.";
-  return "Das hat nicht geklappt. Nochmal versuchen.";
+  if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(c)) { sample = null; return "Neue Ideen gehen gerade nicht. Hier sind Ideen aus eurer Liste der Lieblingsorte:"; }
+  if (c === "rate_limited") return "Gerade kamen zu viele Anfragen. Hier ein paar Ideen aus dem Pool, später klappt es wieder:";
+  if (c === "session_expired") return "Bitte melde dich neu an. Bis dahin ein paar Ideen aus dem Pool:";
+  return "Das hat gerade nicht geklappt. Hier ein paar Ideen aus dem Pool:";
 }
-async function askClaude() {
-  if (!sample) return;
+async function findIdeas() {
+  if (!sample) { rollPool(); scrollToOut(); return; }
   const f = S.f, dist = DIST.find(d => d.k === f.dist);
   const saved = S.ideas.map(i => i.title).slice(-60).join("; ");
+  const extra = $("#f-extra").value.trim().slice(0, 300);
   const prompt = `Du planst Dates für ein Paar aus Schwerte (NRW, Kreis Unna, am Rand des Ruhrgebiets, nahe Dortmund, Hagen, Iserlohn, Sauerland).
-Heute ist ${todayTxt}. Beachte Jahreszeit, Wetter-Typ der Saison und Wochentag.
+Heute ist ${todayTxt}. Beachte Jahreszeit und Wochentag.
 
 Das Paar:
 ${coupleText()}
 
 Wünsche für dieses Date:
-- Entfernung ab Schwerte: höchstens ${dist.max} km (${dist.label})
+- Entfernung ab Schwerte: höchstens ${dist.max} km
 - Budget für beide zusammen: ${f.budget === 3 ? "egal, darf auch mehr kosten" : "höchstens " + BUDGET_TXT[f.budget]}
 - Zeit: ${DUR.find(d => d.v === f.dur).label}
 - Stimmung: ${f.moods.length ? f.moods.join(", ") : "offen, gern gemischt"}
 - Drinnen/draußen: ${f.io}
-- Wann: ${$("#f-when").value}
-${$("#f-extra").value.trim() ? "- Zusätzlich: " + $("#f-extra").value.trim().slice(0, 300) : ""}
+- Wann: ${f.when}
+${extra ? "- Zusätzlich: " + extra : ""}
 
-Schon in ihrer Sammlung (nicht wiederholen): ${saved || "noch nichts"}
+Schon auf ihrer Merkliste (nicht wiederholen): ${saved || "noch nichts"}
 
 Regeln:
-- Nur echte, existierende Orte und Locations mit Namen. Nichts erfinden. Wenn du bei einem konkreten Laden unsicher bist, nimm einen bekannten Ort oder beschreibe die Art der Location mit Stadt.
+- Nur echte, existierende Orte und Locations mit Namen. Nichts erfinden. Bei Unsicherheit einen bekannten Ort nehmen oder die Art der Location mit Stadt nennen.
 - Veranstaltungen nur, wenn es bekannte wiederkehrende Formate zur passenden Jahreszeit sind, dann checkDate: true.
 - Mischung: mindestens eine sehr günstige Idee und eine, auf die sie selbst nicht gekommen wären.
-- Deutsch, locker, direkt an die beiden gerichtet.
+- Deutsch, locker, warm, direkt an die beiden gerichtet. Kurze Sätze.
 
 Antworte NUR mit einem JSON-Array aus genau 5 Objekten in dieser Form:
 ${IDEA_SHAPE}`;
   ctl = new AbortController();
-  busy(true, $("#genStatus"), "Claude überlegt… (dauert meist 10–40 Sekunden)");
+  S.genState = "loading"; S.genMsg = ""; renderGen(); scrollToOut();
   try {
     const arr = await sample.json(prompt, {signal:ctl.signal, cache:false});
     const list = (Array.isArray(arr) ? arr : []).filter(x => x && x.title).map(x => ({...cleanIdea(x), source:"ki"}));
-    S.results = list; S.resultsKind = "ki"; S.resultsTitle = list.length ? "Frisch von Claude" : "";
-    busy(false, $("#genStatus"), list.length ? "" : "Keine brauchbaren Ideen bekommen. Nochmal versuchen.");
-    renderResults();
-    $("#genResults").scrollIntoView({behavior:"smooth", block:"start"});
+    if (!list.length) { rollPool("Da kam nichts Brauchbares zurück. Hier Ideen aus dem Pool:"); return; }
+    S.results = list; S.resultsKind = "ki"; S.resultsTitle = "Ideen für euch"; S.genState = "done"; renderGen();
   } catch (e) {
-    busy(false, $("#genStatus"), sampleErr(e));
+    if (e && e.code === "cancelled") { S.genState = S.results.length ? "done" : "idle"; renderGen(); return; }
+    rollPool(friendlyErr(e));
   }
 }
+function scrollToOut() { requestAnimationFrame(() => $("#genOut").scrollIntoView({behavior:"smooth", block:"start"})); }
 function cleanIdea(x) {
   const n = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : null;
-  return {
-    title:String(x.title).slice(0,120), place:String(x.place || "").slice(0,120), city:String(x.city || "").slice(0,60),
+  return {title:String(x.title).slice(0,120), place:String(x.place || "").slice(0,120), city:String(x.city || "").slice(0,60),
     km:n(x.km), budget:Math.min(3, n(x.budget) ?? 1), cost:String(x.cost || "").slice(0,60), duration:String(x.duration || "").slice(0,40),
     moods:Array.isArray(x.moods) ? x.moods.map(String).slice(0,4) : [], io:String(x.io || ""), desc:String(x.desc || "").slice(0,500),
-    tip:String(x.tip || "").slice(0,300), checkDate:!!x.checkDate,
-  };
+    tip:String(x.tip || "").slice(0,300), checkDate:!!x.checkDate};
 }
-async function askEvents() {
+async function findEvents() {
   if (!sample) return;
-  const city = $("#ev-city").value;
-  const prompt = `Heute ist ${todayTxt}. Ein Paar aus Schwerte (NRW) sucht Veranstaltungen und saisonale Highlights ${$("#ev-when").value}, rund um ${city} (höchstens ca. 60 km ab Schwerte).
+  const prompt = `Heute ist ${todayTxt}. Ein Paar aus Schwerte (NRW) sucht Veranstaltungen und saisonale Highlights ${S.evWhen}, rund um ${S.evCity} (höchstens ca. 60 km ab Schwerte).
 ${coupleText()}
 
 Nenne 6 bekannte, WIEDERKEHRENDE Veranstaltungen, Märkte, Feste, Saison-Angebote oder feste Programmreihen, die typischerweise in diesem Zeitraum oder dieser Jahreszeit stattfinden (z. B. Kirmes, Weihnachtsmärkte, Lichtfeste, Kürbisfeste, Konzertreihen, Eislaufbahnen). Nur Dinge, die es wirklich gibt. Keine exakten Daten erfinden, nenne nur den typischen Zeitraum im Feld "duration".
 Antworte NUR mit einem JSON-Array aus 6 Objekten in dieser Form (checkDate immer true):
 ${IDEA_SHAPE}`;
   ctl = new AbortController();
-  busy(true, $("#evStatus"), "Claude sucht saisonale Highlights…");
+  S.evState = "loading"; S.evMsg = ""; renderEv();
   try {
     const arr = await sample.json(prompt, {signal:ctl.signal, cache:{gcTime:3600000}});
     S.evResults = (Array.isArray(arr) ? arr : []).filter(x => x && x.title).map(x => ({...cleanIdea(x), checkDate:true, source:"ki"}));
-    busy(false, $("#evStatus"), S.evResults.length ? "" : "Nichts Brauchbares bekommen. Nochmal versuchen.");
-    renderEvents();
-  } catch (e) { busy(false, $("#evStatus"), sampleErr(e)); }
-}
-$("#btnAi").onclick = askClaude;
-$("#btnEvAi").onclick = askEvents;
-$("#btnStop").onclick = () => ctl?.abort();
-$("#btnPool").onclick = rollPool;
-
-/* ---------- Cards ---------- */
-function card(i, opts = {}) {
-  const saved = opts.saved;
-  const meta = [
-    i.km != null ? `<span class="m km">≈ ${esc(i.km)} km</span>` : "",
-    i.budget != null ? `<span class="m" title="${esc(BUDGET_TXT[i.budget] || "")}">${esc(i.cost || BUDGET_SIGN[i.budget])}</span>` : "",
-    i.duration ? `<span class="m">${esc(i.duration)}</span>` : "",
-    i.io ? `<span class="m">${esc(i.io)}</span>` : "",
-    i.checkDate ? `<span class="m check">Termin prüfen</span>` : "",
-    saved && i.status === "gemacht" ? `<span class="m done">✓ gemacht</span>` : "",
-  ].join("");
-  const where = [i.place, i.city].filter(Boolean).join(" · ");
-  const q = [i.place || i.title, i.city, i.checkDate ? "Termine " + now.getFullYear() : ""].filter(Boolean).join(" ");
-  let foot = `<a class="btn small" href="${mapsUrl(i)}" target="_blank" rel="noopener">Karte</a>
-    <a class="btn small" href="${searchUrl(q)}" target="_blank" rel="noopener">Infos</a><span class="spacer"></span>`;
-  if (!saved) {
-    const already = isSaved(i.title);
-    foot += `<button class="btn small ${already ? "" : "primary"}" data-act="save" data-k="${opts.key}" ${already ? "disabled" : ""}>${already ? "Gespeichert" : "Merken"}</button>`;
-  } else {
-    const del = S.confirmDel === i.id;
-    foot += `<button class="btn small fav" data-act="fav" data-id="${esc(i.id)}" aria-pressed="${!!i.fav}" aria-label="Favorit">${i.fav ? "♥" : "♡"}</button>
-      <button class="btn small" data-act="done" data-id="${esc(i.id)}">${i.status === "gemacht" ? "Wieder offen" : "Gemacht"}</button>
-      <button class="btn small ghost" data-act="del" data-id="${esc(i.id)}">${del ? "Wirklich löschen?" : "Löschen"}</button>`;
+    S.evState = "done"; S.evMsg = S.evResults.length ? "" : "Da kam nichts Brauchbares zurück. Versucht es gleich nochmal.";
+  } catch (e) {
+    S.evState = S.evResults.length ? "done" : "idle";
+    S.evMsg = e && e.code === "cancelled" ? "" : "Das hat gerade nicht geklappt. Die Suchlinks oben funktionieren immer.";
+    if (e && ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e.code)) sample = null;
   }
+  renderEv();
+}
+$("#btnFind").onclick = findIdeas;
+$("#btnPool").onclick = () => { rollPool(); scrollToOut(); };
+$("#btnEv").onclick = findEvents;
+
+/* ---------- Karten ---------- */
+function facts(i, saved) {
+  const out = [];
+  if (i.km != null) out.push(i.km <= 3 ? "Direkt in Schwerte" : `ca. ${i.km} km`);
+  if (i.cost) out.push(i.cost); else if (i.budget != null) out.push(BUDGET_FACT[i.budget]);
+  if (i.duration) out.push(i.duration);
+  let html = out.map(t => `<span class="fact">${esc(t)}</span>`).join("");
+  if (i.checkDate) html += `<span class="fact warn">Datum vorher checken</span>`;
+  if (saved && i.status === "gemacht") html += `<span class="fact ok">Schon erlebt</span>`;
+  return html;
+}
+function card(i, opts = {}) {
+  const saved = !!opts.saved, where = [i.place, i.city].filter(Boolean).join(", ");
+  const q = [i.place || i.title, i.city, i.checkDate ? "Termine " + now.getFullYear() : ""].filter(Boolean).join(" ");
+  let actions = "";
+  if (!saved) {
+    const s = isSaved(i.title);
+    actions = `<button class="btn small save ${s ? "done" : ""}" data-act="save" data-k="${opts.key}" ${s ? "disabled" : ""}>${icon(s ? "check" : "heart")}${s ? "Gemerkt" : "Merken"}</button>`;
+  } else {
+    const done = i.status === "gemacht";
+    actions = `<button class="btn small heart" data-act="fav" data-id="${esc(i.id)}" aria-pressed="${!!i.fav}" aria-label="${i.fav ? "Kein Favorit mehr" : "Als Favorit markieren"}">${icon("heart")}</button>
+      <button class="btn small ${done ? "" : "save"}" data-act="done" data-id="${esc(i.id)}">${icon("check")}${done ? "Doch noch nicht" : "Haben wir gemacht"}</button>`;
+  }
+  const links = `<span class="grow"></span>
+    <a class="btn small line" href="${mapsUrl(i)}" target="_blank" rel="noopener" aria-label="Route in Google Maps">${icon("map")}Route</a>
+    <a class="btn small line" href="${searchUrl(q)}" target="_blank" rel="noopener" aria-label="Mehr Infos suchen">${icon("info")}Infos</a>`;
   const stars = saved && i.status === "gemacht"
-    ? `<div class="row"><span class="note">Wie war's?</span><span class="stars">${[1,2,3,4,5].map(n => `<button data-act="rate" data-id="${esc(i.id)}" data-n="${n}" class="${n <= (i.rating || 0) ? "on" : ""}" aria-label="${n} Sterne">★</button>`).join("")}</span></div>` : "";
-  const by = saved && i.addedBy ? `<div class="by">gemerkt von ${esc(i.addedBy)}${i.source === "ki" ? " · Idee von Claude" : i.source === "pool" ? " · aus dem Pool" : ""}</div>` : "";
-  return `<article class="ticket ${S.pickedId && S.pickedId === i.id ? "picked" : ""}" id="${saved ? "idea-" + esc(i.id) : ""}">
-    <div class="t-head"><h3>${esc(i.title)}</h3>${where ? `<div class="t-where">${esc(where)}</div>` : ""}</div>
-    <div class="t-body">
-      ${meta ? `<div class="meta">${meta}</div>` : ""}
-      ${i.desc ? `<p class="t-desc">${esc(i.desc)}</p>` : ""}
-      ${i.tip ? `<p class="t-tip"><b>Tipp:</b> ${esc(i.tip)}</p>` : ""}
-      ${stars}${by}
-    </div>
-    <div class="t-foot">${foot}</div>
+    ? `<div class="stars"><span>Wie war's?</span>${[1,2,3,4,5].map(n => `<button data-act="rate" data-id="${esc(i.id)}" data-n="${n}" class="${n <= (i.rating || 0) ? "on" : ""}" aria-label="${n} von 5 Sternen">★</button>`).join("")}</div>` : "";
+  const foot = saved
+    ? `<div class="card-actions"><span class="by">Gemerkt von ${esc(i.addedBy || "euch")}</span><span class="grow"></span><button class="link" data-act="del" data-id="${esc(i.id)}" style="color:${S.confirmDel === i.id ? "var(--orange)" : "var(--muted)"};font-weight:600;font-size:14px">${S.confirmDel === i.id ? "Wirklich löschen?" : "Löschen"}</button></div>` : "";
+  return `<article class="card ${saved && S.pickedId === i.id ? "picked" : ""}" ${saved ? `id="idea-${esc(i.id)}"` : ""}>
+    <h3>${esc(i.title)}</h3>
+    ${where ? `<div class="where">${icon("pin")}${esc(where)}</div>` : ""}
+    <div class="facts">${facts(i, saved)}</div>
+    ${i.desc ? `<p>${esc(i.desc)}</p>` : ""}
+    ${i.tip ? `<p class="tip">Tipp: ${esc(i.tip)}</p>` : ""}
+    ${stars}
+    <div class="card-actions">${actions}${links}</div>
+    ${foot}
   </article>`;
 }
-
-function renderResults() {
-  const el = $("#genResults");
-  if (!S.results.length) { el.innerHTML = ""; return; }
-  el.innerHTML = `<div class="res-head"><h2>${esc(S.resultsTitle)}</h2>
-    <button class="btn small" id="again">${S.resultsKind === "ki" ? "Andere Ideen" : "Nochmal würfeln"}</button></div>
-    <div class="grid">${S.results.map((r, k) => card(r, {key:"g" + k})).join("")}</div>`;
-  $("#again").onclick = S.resultsKind === "ki" ? askClaude : rollPool;
+function loadingBox(text) {
+  return `<div class="loading"><div class="dots"><i></i><i></i><i></i></div><b>${esc(text)}</b><span class="muted small-text">Das dauert meist 10 bis 30 Sekunden.</span><button class="btn small line" data-act="stop">Abbrechen</button></div>`;
 }
-function renderEvents() {
-  $("#evResults").innerHTML = S.evResults.map((r, k) => card(r, {key:"e" + k})).join("");
+
+function renderGen() {
+  const el = $("#genOut");
+  $("#btnFind").disabled = S.genState === "loading";
+  if (S.genState === "loading") { el.innerHTML = `<div style="margin-top:24px">${loadingBox("Wir suchen was Schönes für euch…")}</div>`; return; }
+  el.innerHTML = (S.genMsg ? `<div class="msg" style="margin-top:24px">${esc(S.genMsg)}</div>` : "") +
+    (S.results.length ? `<div class="sec-head"><h2>${esc(S.resultsTitle)}</h2><button class="link" id="again">${icon("dice")}Andere zeigen</button></div>
+    <div class="cards">${S.results.map((r, k) => card(r, {key:"g" + k})).join("")}</div>` : "");
+  const a = $("#again"); if (a) a.onclick = () => S.resultsKind === "ki" ? findIdeas() : rollPool();
 }
 
 function renderColl() {
-  const f = S.collFilter;
-  const all = [...S.ideas].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-  const list = all.filter(i => f === "alle" ? true : f === "fav" ? i.fav : f === "gemacht" ? i.status === "gemacht" : i.status !== "gemacht");
-  const cnt = {alle:all.length, offen:all.filter(i => i.status !== "gemacht").length, fav:all.filter(i => i.fav).length, gemacht:all.filter(i => i.status === "gemacht").length};
-  chipRow($("#collFilter"), [{v:"offen",label:`Offen · ${cnt.offen}`},{v:"fav",label:`Favoriten · ${cnt.fav}`},{v:"gemacht",label:`Gemacht · ${cnt.gemacht}`},{v:"alle",label:`Alle · ${cnt.alle}`}],
-    x => x.v === f, x => { S.collFilter = x.v; S.pickedId = null; renderColl(); });
-  $("#collCount").textContent = cnt.offen;
+  const f = S.collFilter, all = [...S.ideas].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const open = all.filter(i => i.status !== "gemacht");
+  const list = f === "fav" ? all.filter(i => i.fav) : f === "gemacht" ? all.filter(i => i.status === "gemacht") : open;
+  const segs = [{v:"offen",label:`Noch offen (${open.length})`},{v:"fav",label:"Favoriten"},{v:"gemacht",label:"Erlebt"}];
+  $("#collSeg").innerHTML = segs.map(s => `<button type="button" data-v="${s.v}" aria-pressed="${s.v === f}">${esc(s.label)}</button>`).join("");
+  const badge = $("#badge"); badge.hidden = !open.length; badge.textContent = open.length;
+  $("#btnSurprise").hidden = !open.length;
+  let emptyText = "Hier ist noch nichts.";
+  if (!all.length) emptyText = "Noch keine Ideen gemerkt. Tippt bei einer Idee auf „Merken“, dann landet sie hier.";
+  else if (f === "fav") emptyText = "Tippt auf das Herz bei einer Idee, um sie zum Favoriten zu machen.";
+  else if (f === "gemacht") emptyText = "Wenn ihr ein Date erlebt habt, tippt auf „Haben wir gemacht“.";
   $("#collList").innerHTML = list.length ? list.map(i => card(i, {saved:true})).join("")
-    : `<div class="empty">${all.length ? "Hier ist gerade nichts." : "Noch keine Ideen gemerkt. Generiert welche unter „Ideen finden“ und tippt auf „Merken“."}</div>`;
-  $("#btnSurprise").disabled = !cnt.offen;
+    : `<div class="empty">${icon("heart")}<span>${esc(emptyText)}</span>${!all.length ? `<button class="btn" data-go="gen">Ideen entdecken</button>` : ""}</div>`;
 }
+$("#collSeg").onclick = e => { const b = e.target.closest("[data-v]"); if (b) { S.collFilter = b.dataset.v; S.pickedId = null; renderColl(); } };
 $("#btnSurprise").onclick = () => {
-  const open = S.ideas.filter(i => i.status !== "gemacht");
-  if (!open.length) return;
-  const favs = open.filter(i => i.fav), bag = [...open, ...favs]; // Favoriten doppelt im Lostopf
-  S.pickedId = bag[Math.floor(Math.random() * bag.length)].id;
-  S.collFilter = "offen"; renderColl();
+  const open = S.ideas.filter(i => i.status !== "gemacht"); if (!open.length) return;
+  const bag = [...open, ...open.filter(i => i.fav)];
+  S.pickedId = bag[Math.floor(Math.random() * bag.length)].id; S.collFilter = "offen"; renderColl();
   document.getElementById("idea-" + S.pickedId)?.scrollIntoView({behavior:"smooth", block:"center"});
+  toast("Das wird's!");
 };
 
-/* Card actions (delegiert) */
+/* ---------- Events ---------- */
+function renderEv() {
+  chips($("#evCity"), CITIES.map(([c]) => ({v:c, label:c})), c => c.v === S.evCity, c => { S.evCity = c.v; renderEv(); });
+  chips($("#evWhen"), EV_WHEN.map(w => ({v:w, label:w[0].toUpperCase() + w.slice(1)})), w => w.v === S.evWhen, w => { S.evWhen = w.v; renderEv(); });
+  const c = S.evCity, w = S.evWhen, dom = (CITIES.find(x => x[0] === c) || [])[1];
+  const links = [
+    ["search", `Veranstaltungen in ${c} suchen`, searchUrl(`Veranstaltungen ${c} ${w}`)],
+    ["music", "Konzerte & Partys", searchUrl(`Konzert Party ${c} ${w}`)],
+    ["ticket", "Tickets bei Eventim", "https://www.eventim.de/search/?searchterm=" + encodeURIComponent(c)],
+    ["film", "Kinoprogramm", searchUrl(`Kinoprogramm ${c} ${w}`)],
+    ["store", "Märkte & Feste", searchUrl(`Markt Fest ${c} ${w} ${now.getFullYear()}`)],
+    ["cal", `Veranstaltungskalender der Stadt`, searchUrl(`site:${dom} Veranstaltungen`)],
+  ];
+  $("#evLinks").innerHTML = links.map(([ic, l, u]) => `<a class="linkrow" href="${u}" target="_blank" rel="noopener">${icon(ic)}<span>${esc(l)}</span><span class="arrow">↗</span></a>`).join("");
+  $("#btnEv").hidden = !sample;
+  $("#btnEv").disabled = S.evState === "loading";
+  const out = $("#evOut");
+  if (S.evState === "loading") { out.innerHTML = loadingBox(`Wir schauen, was in ${c} typischerweise los ist…`); return; }
+  out.innerHTML = (S.evMsg ? `<div class="msg">${esc(S.evMsg)}</div>` : "") +
+    (S.evResults.length ? `<div class="cards">${S.evResults.map((r, k) => card(r, {key:"e" + k})).join("")}</div>` :
+    (!sample ? `<p class="muted">Nutzt die Links oben, dort findet ihr aktuelle Termine.</p>` : ""));
+}
+
+/* ---------- Klicks auf Karten ---------- */
 document.addEventListener("click", async e => {
-  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const go = e.target.closest("[data-go]"); if (go) { setTab(go.dataset.go); return; }
+  const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act, id = b.dataset.id;
+  if (act === "stop") { ctl?.abort(); return; }
   try {
     if (act === "save") {
-      const k = b.dataset.k, src = k[0] === "g" ? S.results : S.evResults, idea = src[+k.slice(1)];
+      const k = b.dataset.k, idea = (k[0] === "g" ? S.results : S.evResults)[+k.slice(1)];
       if (!idea || isSaved(idea.title)) return;
-      b.disabled = true; b.textContent = "Speichere…";
+      b.disabled = true;
       await store.add(idea);
-      b.textContent = "Gespeichert"; b.classList.remove("primary");
+      b.classList.add("done"); b.innerHTML = icon("check") + "Gemerkt"; toast("Auf der Merkliste");
     } else if (act === "fav") {
       const i = S.ideas.find(x => x.id === id); await store.update(id, {fav:!i.fav});
     } else if (act === "done") {
-      const i = S.ideas.find(x => x.id === id);
-      await store.update(id, i.status === "gemacht" ? {status:"offen"} : {status:"gemacht", doneAt:Date.now()});
+      const i = S.ideas.find(x => x.id === id), was = i.status === "gemacht";
+      await store.update(id, was ? {status:"offen"} : {status:"gemacht", doneAt:Date.now()});
+      if (!was) toast("Schön! Wie war's? Gebt unten Sterne.");
+      if (!was) { S.collFilter = "gemacht"; renderColl(); }
     } else if (act === "rate") {
       await store.update(id, {rating:+b.dataset.n});
     } else if (act === "del") {
       if (S.confirmDel !== id) { S.confirmDel = id; renderColl(); return; }
-      S.confirmDel = null; await store.remove(id);
+      S.confirmDel = null; await store.remove(id); toast("Gelöscht");
     }
-  } catch (err) {
-    flash(err && err.code === "invalid_argument" ? "Du hast hier nur Leserechte." : err && err.code === "quota_exceeded" ? "Speicher voll. Alte Ideen löschen." : "Speichern hat nicht geklappt. Nochmal versuchen.");
-  }
+  } catch (err) { b.disabled = false; toast(errText(err)); }
 });
-function flash(t) { const s = $("#genStatus"); s.textContent = t; setTimeout(() => { if (s.textContent === t) s.textContent = ""; }, 4000); }
 
-/* Eigene Idee */
+/* ---------- Eigene Idee ---------- */
+function openSheet(on) { $("#sheet").hidden = !on; if (on) { renderAddBudget(); setTimeout(() => $("#a-title").focus(), 50); } }
+function renderAddBudget() { chips($("#a-budget"), BUDGET.map(b => ({v:b.v, label:b.label})), b => b.v === S.addBudget, b => { S.addBudget = b.v; renderAddBudget(); }); }
+$("#fab").onclick = () => openSheet(true);
+$("#sheetClose").onclick = () => openSheet(false);
+$("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") openSheet(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#sheet").hidden) openSheet(false); });
 $("#addForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const km = $("#a-km").value === "" ? null : Math.max(0, Math.round(+$("#a-km").value));
-  const idea = {title:$("#a-title").value.trim(), place:$("#a-place").value.trim(), city:$("#a-city").value.trim(),
-    budget:+$("#a-budget").value, km, desc:$("#a-desc").value.trim(), tip:"", duration:"", io:"", moods:[], checkDate:false, source:"manuell"};
-  if (!idea.title) return;
-  try { await store.add(idea); e.target.reset(); $("#addBox").open = false; S.collFilter = "offen"; renderColl(); }
-  catch { flash("Speichern hat nicht geklappt."); }
+  const title = $("#a-title").value.trim(); if (!title) return;
+  const idea = {title, place:"", city:$("#a-where").value.trim(), budget:S.addBudget, km:null, desc:$("#a-desc").value.trim(),
+    tip:"", duration:"", io:"", moods:[], checkDate:false, source:"manuell"};
+  try { await store.add(idea); e.target.reset(); S.addBudget = 1; openSheet(false); S.collFilter = "offen"; renderColl(); toast("Auf der Merkliste"); }
+  catch (err) { toast(errText(err)); }
 });
-
-/* ---------- Events-Links ---------- */
-$("#ev-city").innerHTML = CITIES.map(([c]) => `<option>${c}</option>`).join("");
-function renderEvLinks() {
-  const city = $("#ev-city").value, when = $("#ev-when").value, dom = (CITIES.find(c => c[0] === city) || [])[1];
-  const links = [
-    ["Veranstaltungen", searchUrl(`Veranstaltungen ${city} ${when}`)],
-    ["Konzerte & Tickets", "https://www.eventim.de/search/?searchterm=" + encodeURIComponent(city)],
-    ["Stadtportal", searchUrl(`site:${dom} Veranstaltungen`)],
-    ["Kinoprogramm", searchUrl(`Kinoprogramm ${city} ${when}`)],
-    ["Märkte & Feste", searchUrl(`Markt Fest ${city} ${when} ${now.getFullYear()}`)],
-    ["Ruhr-Guide", searchUrl(`site:ruhr-guide.de ${city}`)],
-  ];
-  $("#evLinks").innerHTML = links.map(([l, u]) => `<a class="btn small" href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join("");
-}
-$("#ev-city").onchange = renderEvLinks; $("#ev-when").onchange = renderEvLinks;
 
 /* ---------- Profil ---------- */
 const PF = {n1:"#p-n1", i1:"#p-i1", n2:"#p-n2", i2:"#p-i2", both:"#p-both", no:"#p-no", food:"#p-food", mob:"#p-mob"};
 let profDirty = false;
 $("#profForm").addEventListener("input", () => { profDirty = true; });
 function fillProfile() {
-  if (profDirty) return;
-  for (const [k, sel] of Object.entries(PF)) $(sel).value = S.couple[k] ?? "";
+  if (!profDirty) for (const [k, sel] of Object.entries(PF)) $(sel).value = S.couple[k] ?? "";
+  const [a, b] = names();
+  $("#l-i1").textContent = `Das mag ${a}`; $("#l-i2").textContent = `Das mag ${b}`;
 }
 $("#profForm").addEventListener("submit", async e => {
   e.preventDefault();
   const c = {}; for (const [k, sel] of Object.entries(PF)) c[k] = $(sel).value.trim().slice(0, 800);
-  $("#profStatus").textContent = "Speichere…";
-  try { await store.saveCouple(c); profDirty = false; S.couple = {...DEFAULT_COUPLE, ...c}; renderMe(); $("#profStatus").textContent = "Gespeichert."; }
-  catch (err) { $("#profStatus").textContent = err && err.code === "invalid_argument" ? "Nur Leserechte, Speichern nicht möglich." : "Hat nicht geklappt. Nochmal versuchen."; }
+  try { await store.saveCouple(c); profDirty = false; S.couple = {...DEFAULT_COUPLE, ...c}; renderWho(); fillProfile(); toast("Gespeichert"); }
+  catch (err) { toast(errText(err)); }
 });
 
-/* ---------- Ich bin ---------- */
-function renderMe() {
+/* ---------- Wer bin ich ---------- */
+function renderWho() {
   const [a, b] = names();
-  $("#meSeg").innerHTML = `<button type="button" data-me="1" aria-pressed="${S.me !== 2}">${esc(a)}</button><button type="button" data-me="2" aria-pressed="${S.me === 2}">${esc(b)}</button>`;
+  $("#who").innerHTML = `<button type="button" data-me="1" aria-pressed="${S.me !== 2}">${esc(a)}</button><button type="button" data-me="2" aria-pressed="${S.me === 2}">${esc(b)}</button>`;
+  $("#hi").textContent = `Hallo ${myName()}!`;
 }
-$("#meSeg").onclick = e => { const b = e.target.closest("button[data-me]"); if (!b) return; S.me = +b.dataset.me; lsSet("me", S.me); renderMe(); };
+$("#who").onclick = e => { const b = e.target.closest("[data-me]"); if (!b) return; S.me = +b.dataset.me; lsSet("me", S.me); renderWho(); };
 
 /* ---------- Tabs ---------- */
 function setTab(t) {
-  S.tab = t; lsSet("tab", t);
-  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  lsSet("tab", t);
+  document.querySelectorAll(".nav button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
   for (const v of ["gen", "coll", "ev", "prof"]) $("#view-" + v).hidden = v !== t;
+  $("#fab").hidden = t !== "coll";
+  window.scrollTo({top:0});
 }
-document.querySelector(".tabs").onclick = e => { const b = e.target.closest("button[data-tab]"); if (b) setTab(b.dataset.tab); };
+document.querySelector(".nav").onclick = e => { const b = e.target.closest("[data-tab]"); if (b) setTab(b.dataset.tab); };
 
-/* ---------- Modus ---------- */
-function applyMode() {
-  const ban = $("#modeBanner");
-  if (mode === "local") {
-    ban.hidden = false; ban.className = "banner warn";
-    ban.textContent = "Offline-Modus: Eure Sammlung wird gerade nur in diesem Browser gespeichert.";
-  } else ban.hidden = true;
-  $("#btnAi").hidden = !sample; $("#btnEvAi").hidden = !sample;
-  if (!sample && mode !== "loading") $("#btnPool").classList.add("primary");
-}
-function renderAll() { renderRadar(); renderColl(); renderResults(); renderEvents(); fillProfile(); renderMe(); }
+function renderLists() { renderColl(); renderGen(); if (S.evResults.length) renderEv(); }
 
 /* ---------- Start ---------- */
-$("#today").textContent = "Ab Schwerte · " + todayTxt;
-setTab(["gen","coll","ev","prof"].includes(lsGet("tab","gen")) ? lsGet("tab","gen") : "gen");
-renderFilters(); renderEvLinks();
-S.results = poolMatches(true).sort(() => Math.random() - .5).slice(0, 3).map(poolToIdea);
-S.resultsKind = "pool"; S.resultsTitle = "Passt gerade zu euren Filtern";
-renderAll();
+$("#today").textContent = todayTxt + " · ab Schwerte";
+const startTab = lsGet("tab", "gen");
+setTab(["gen","coll","ev","prof"].includes(startTab) ? startTab : "gen");
+renderFilters(); renderWho(); fillProfile(); renderEv();
+S.results = shuffle(poolMatches(true)).slice(0, 3).map(poolToIdea);
+S.resultsKind = "pool"; S.resultsTitle = "Vorschläge für euch"; S.genState = "done";
+renderLists();
 
 (async () => {
   const c = window.claude;
@@ -788,20 +770,18 @@ renderAll();
     [db, sample] = await Promise.all([c.use("db").catch(() => null), c.use("sample").catch(() => null)]);
   }
   if (db) {
-    mode = "db";
     db.collection("ideas").onSnapshot(snap => {
-      S.ideas = snap.docs.map(d => ({id:d.id, ...d.data()}));
-      renderColl(); renderRadar(); renderResults(); renderEvents();
-    }, () => { mode = "local"; applyMode(); });
+      S.ideas = snap.docs.map(d => ({id:d.id, ...d.data()})); renderLists();
+    }, () => toast("Die Merkliste lässt sich gerade nicht laden."));
     db.doc("settings/couple").onSnapshot(s => {
-      if (s.exists) { S.couple = {...DEFAULT_COUPLE, ...s.data()}; fillProfile(); renderMe(); }
+      if (s.exists) { S.couple = {...DEFAULT_COUPLE, ...s.data()}; fillProfile(); renderWho(); }
     }, () => {});
   } else {
-    mode = "local";
+    local = true;
     S.ideas = lsGet("ideas", []); S.couple = {...DEFAULT_COUPLE, ...lsGet("couple", {})};
-    renderAll();
+    fillProfile(); renderWho(); renderLists();
   }
-  applyMode();
+  renderEv();
 })();
 })();
 </script>
